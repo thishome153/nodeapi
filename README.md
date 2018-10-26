@@ -4,7 +4,7 @@ Web server service  on node.js framework.
 serve requests (query) to Mysql server database 
 and response with JSON format. As known, well and further it is used in HTML, php and several frontend things.
 
-##### Example
+##### Example (zum beispiel)
 
 http://node-js-server/node
 got result:
