@@ -2,7 +2,7 @@
 Web server service  on node.js framework. 
 >Server listen port 3050, and
 serve requests (query) to Mysql server database 
-and response with JSON format.
+and response with JSON format. As known, well and further it is used in HTML, php and several frontend things.
 
 ##### Example
 
