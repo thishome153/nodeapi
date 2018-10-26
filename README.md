@@ -1,9 +1,10 @@
 # node.js Web server
-Web server project. 
-Server listen port 3050, and 
-serve requests for query Mysql server database 
-and response with JSON format.
+## Web server project. 
+## Server listen port 3050, and 
+## serve requests (query) to Mysql server database 
+## and response with JSON format.
 
-@2018 Fixosoft
+### @2018 Fixosoft
+[mailto](serg.home153@gmail.com)
 
 
