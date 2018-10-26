@@ -6,7 +6,7 @@ var pool = mysql.createPool(credents.cfg);
 var pool_ads = mysql.createPool(credents.ads_cfg);
 
 exports.getSubRF = function(city, callback) {
-    var sql = "SELECT subrf_kn,subrf_Name FROM subrf";
+    var sql = "SELECT subrf_kn, subrf_Name FROM subrf";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
       if(err) { console.log(err); callback(true); return; }
@@ -21,7 +21,7 @@ exports.getSubRF = function(city, callback) {
   
 
   exports.getRecords = function(cn, callback) {
-    var sql = "select   (SELECT count(lottable.lottable_id) FROM lottable) as Parcels,"+
+    var sql = "select   (SELECT COUNT(lottable.lottable_id) FROM lottable) as Parcels,"+
               "(SELECT count(vidimus.vidimus_id) FROM vidimus) as vidimusCount,"+
               "(select count(blocks.block_id) from blocks ) as BlockCount, "+
               "(select count(kpt.kpt_id) from kpt ) as KPTCount";
