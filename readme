@@ -1,0 +1,83 @@
+
+
+Just follow these steps:
+0. Configure Apache for proxing request due firewall allowed only Apache interaction:
+
+<Location /node>
+ Proxypass http://10.66.77.47:3050                        /etc/httpd/conf/httpd.conf 
+ ProxypassReverse http://10.66.77.47:3050                 /etc/httpd/conf/httpd.conf
+</Location>
+
+********************************************************************************************************************
+1. npm init
+
+iMac-root1:nodeApi ulaadm$ npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help json` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (nodeapi) 
+version: (1.0.0) 
+description: Node.js REST api service
+entry point: (index.js) 
+test command: test
+git repository: 
+keywords: REST, API
+author: Fixosoft
+license: (ISC) 
+About to write to /Users/ulaadm/Projects/node.js/nodeApi/package.json:
+
+{
+  "name": "nodeapi",
+  "version": "1.0.0",
+  "description": "Node.js REST api service",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "REST",
+    "API"
+  ],
+  "author": "Fixosoft",
+  "license": "ISC"
+}
+
+
+Is this ok? (yes) 
+iMac-root1:nodeApi ulaadm$ 
+********************************************************************************************************************
+Visual Studio Code have integrated terminal:
+Server setup
+Let's install express and nodmon, express will be used to create the server while nodmon will help us 
+to keep track of changes to our application by watching changed files and automatically restart the server.
+npm install --save-dev nodemon
+npm install express --save
+
+
+********************************************************************************************************************
+npm run start
+
+----------------------------------------------------------------------------------
+//"debug": "DEBUG=pd* nodemon --inspect-brk --harmony --nolazy server.js -e js,mustache,json,yaml"
+----------------------------------------------------------------------------------
+
+
+
+Git howto 
+
+echo "# test" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/thishome153/nodeapi.git
+git push -u origin master
+
+
+Initialize with Code:

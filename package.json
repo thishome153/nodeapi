@@ -1,0 +1,21 @@
+{
+  "name": "nodeapi",
+  "version": "1.0.0",
+  "description": "node.js REST API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "debug": "DEBUG=pd* nodemon --inspect-brk --harmony --nolazy server.js -e js,mustache,json,yaml"
+  },
+  "author": "Fixosoft",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.1"
+  },
+  "lockfileVersion": 1,
+  "requires": true,
+  "dependencies": {
+    "express": "^4.16.3",
+    "mysql": "^2.15.0"
+  }
+}
