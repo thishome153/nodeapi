@@ -68,10 +68,11 @@ npm run start
 //"debug": "DEBUG=pd* nodemon --inspect-brk --harmony --nolazy server.js -e js,mustache,json,yaml"
 ----------------------------------------------------------------------------------
 
+**************************************** SCM github *****************************************************************
 
-
-Git howto for empty repo:
-
+1. Git howto for empty repo:
+on github.com create new repo nodeapi, not Initialized with nothing,
+on local machine :
 echo "# test" >> README.md
 git init
 git add README.md
@@ -79,14 +80,11 @@ git commit -m "first commit"
 git remote add origin https://github.com/thishome153/nodeapi.git
 git push -u origin master
 
-
-on github.com create new repo nodeapi, not Initialized with nothing
+2. Git howto for existing local repository
+On github.com create new repo nodeapi, not Initialized with nothing
 
 Initialize with Code:
 
 Then  push an existing repository from the command line
 git remote add origin https://github.com/thishome153/nodeapi.git
 git push -u origin master
-
-26.10.2018 Start repo nodeapi with Code extention.
-Now`ll continue develop of node.js service
