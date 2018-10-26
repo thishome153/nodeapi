@@ -70,7 +70,7 @@ npm run start
 
 
 
-Git howto 
+Git howto for empty repo:
 
 echo "# test" >> README.md
 git init
@@ -80,4 +80,10 @@ git remote add origin https://github.com/thishome153/nodeapi.git
 git push -u origin master
 
 
+on github.com create new repo nodeapi, not Initialized with nothing
+
 Initialize with Code:
+
+Then  push an existing repository from the command line
+git remote add origin https://github.com/thishome153/nodeapi.git
+git push -u origin master
