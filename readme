@@ -21,7 +21,7 @@ and exactly what they do.
 Use `npm install <pkg>` afterwards to install a package and
 save it as a dependency in the package.json file.
 
-Press ^C at any time to quit.
+
 package name: (nodeapi) 
 version: (1.0.0) 
 description: Node.js REST api service
@@ -49,7 +49,6 @@ About to write to /Users/ulaadm/Projects/node.js/nodeApi/package.json:
   "license": "ISC"
 }
 
-
 Is this ok? (yes) 
 iMac-root1:nodeApi ulaadm$ 
 ********************************************************************************************************************
@@ -60,7 +59,6 @@ to keep track of changes to our application by watching changed files and automa
 npm install --save-dev nodemon
 npm install express --save
 
-
 ********************************************************************************************************************
 npm run start
 
@@ -69,7 +67,6 @@ npm run start
 ----------------------------------------------------------------------------------
 
 **************************************** SCM github *****************************************************************
-
 1. Git howto for empty repo:
 on github.com create new repo nodeapi, not Initialized with nothing,
 on local machine :
@@ -84,7 +81,6 @@ git push -u origin master
 On github.com create new repo nodeapi, not Initialized with nothing
 
 Initialize with Code:
-
 Then  push an existing repository from the command line
 git remote add origin https://github.com/thishome153/nodeapi.git
 git push -u origin master
