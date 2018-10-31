@@ -1,7 +1,7 @@
 //node.js Web service 
 //@2018 Fixosoft
-servicename = "srv1"
-ver = "1.0.0.7";
+servicename = "srv1@nodeapi"
+ver = "1.0.0.8";
 trafTotal =0;
 ts = new Date();// save startup time
 
@@ -114,14 +114,34 @@ app.get('/h', function (req, res) {
 			'<head>' +
 			'<meta http-equiv="Content-Type" content="text/html;charset=utf-8" <meta charset="UTF-8">'+
 			'<title>API help page</title>'+
-		'<h2> node.js API REST working at ' + port + '</h2>'+
+		'<br> <h2> '+servicename + ' v'+ver + ' API REST working at ' + port + '</h2>'+
 		'<br> please specify you request.' +
-		'<br> Example for find object:' +
-		'<br> /find?CNumber=99:88:112233:65536'+
-		'<br> /h for help' +
+		'<br> Example: '+
+		
+		'<br> <li>'+
+		' To find object:' +
+		'<br> /find?CNumber=99:88:112233:65536 </li>'+
+		'<br> <li>'+
+		' To find EGRZ object:' +
+		'<br> /fb/ergz/find?cn=26:01:0:536 </li>'+
 		'<br><br><br>' +
 		'@2018 Fixosoft'+
 	'</html>')
+});
+
+//*************************  Firebird  *************************
+app.get('/fb/ergz/find', function (req, res) {
+	var tm = new Date();
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Origin", "*");
+	res.setHeader('Content-Type', 'application/json');
+	res.send(JSON.stringify({
+		"service": "nodeapi " + ver,
+		"startAt": ts.toLocaleDateString()+" "+ ts.toLocaleTimeString(),
+		"query":  "EGRZ search by cn = " + req.query.cn,
+		"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),
+		"state":200
+	}, null, 3) );
 });
 
 //*************************  find  *************************
