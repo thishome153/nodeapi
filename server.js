@@ -1,7 +1,7 @@
 //node.js Web service 
 //@2018 Fixosoft
 servicename = "srv1@nodeapi"
-ver = "1.0.0.10";
+ver = "1.0.0.11";
 trafTotal =0;
 ts = new Date();// save startup time
 
