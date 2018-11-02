@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Запустить программу",
-            "program": "${workspaceRoot}/connector.js",
+            "name": "Start nodeapi",
+            "program": "${workspaceRoot}/server.js",
             "cwd": "${workspaceRoot}"
         },
         {

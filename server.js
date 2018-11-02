@@ -139,13 +139,34 @@ app.get('/fb/egrz/find', function (req, res) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
-	res.send(JSON.stringify({
-		"service": "nodeapi " + ver,
-		"startAt": ts.toLocaleDateString()+" "+ ts.toLocaleTimeString(),
-		"query":  "EGRZ search by cn = " + req.query.cn,
-		"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),
-		"state":200
-	}, null, 3) );
+
+	var Firebird = require('node-firebird');
+	var credents = require('./cfg/credents');
+	
+Firebird.attach(credents.fb, function(err, db) {
+
+    if (err)
+        throw err;
+
+    // db = DATABASE
+    db.query("select * from obj where obj.id_obj = 'Mah2FF 3EE'", function(err, result) {
+		console.log('firebird querying:....');
+	//	console.log(result[0].ID_OBJ);
+	//	console.log(result[0].NAME_OBJ);		
+		res.send(JSON.stringify({
+			"service": "nodeapi " + ver,
+			"startAt": ts.toLocaleDateString()+" "+ ts.toLocaleTimeString(),
+			"query":  result,
+			"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),
+			"state":200
+		}, null, 3) );
+
+        // IMPORTANT: close the connection
+        db.detach();
+    });
+
+});
+
 });
 
 //*************************  find  *************************

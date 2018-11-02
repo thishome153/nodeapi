@@ -1,7 +1,7 @@
 // mysql connector unit
 //@2018 Fixosoft
 var mysql = require('mysql');
-var credents = require('./credents');
+var credents = require('./cfg/credents');
 var pool = mysql.createPool(credents.cfg);
 var pool_ads = mysql.createPool(credents.ads_cfg);
 
