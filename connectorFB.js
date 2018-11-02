@@ -4,14 +4,15 @@ var credents = require('./cfg/credents');
 var Firebird = require('node-firebird');
 
 
-exports.JustQuery = function (city, callback) {
+exports.JustQuery = function (request_cn, callback) {
 
     Firebird.attach(credents.fb, function(err, db) {
 
-            if (err)
-                throw err;
+            if (err)    throw err;
             // db = DATABASE
-    db.query("select * from obj where obj.id_obj = 'Mah2FF 3EE'", function(err, result) {
+    db.query("select * from obj where obj.id_obj = 'Mah2FF 3EE'", 
+          function(err, results) 
+             {
                 console.log('firebird querying:....');
               // IMPORTANT: close the connection
                 db.detach();
@@ -21,7 +22,8 @@ exports.JustQuery = function (city, callback) {
                         return; 
                     }
                 callback(false, results); // return results
-            })
+             }
+            );
     });
 };
      

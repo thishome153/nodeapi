@@ -154,10 +154,10 @@ app.get('/fb/egrz/find', function (req, res) {
 	
 			
 		res.send(JSON.stringify({
-				"service": "nodeapi" +ver,
+				"service": "nodeapi " +ver,
 				"brand": "Fixosoft",
 				"description": "node.js Web server",
-				"Target": Firebird,
+				"Target": "Firebird",
 				"query":  results,
 				"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),
 				"state":200
