@@ -86,6 +86,9 @@ git remote add origin https://github.com/thishome153/nodeapi.git
 git push -u origin master
 
 
-------------Firebird 
+**************************************** Firebird 
+Here module https://www.npmjs.com/package/node-firebird
+
+install module npm i node-firebird
 
  /opt/firebird/bin/gfix -online cadaster.gdb

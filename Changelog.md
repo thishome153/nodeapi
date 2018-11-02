@@ -5,3 +5,6 @@
 Now`ll continue develop of node.js service 
 
 Also test from MaCOSX NATIVE VSCode working
+
+### 
+Begin conncetion to Firebird
