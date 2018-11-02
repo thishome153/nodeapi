@@ -86,3 +86,6 @@ git remote add origin https://github.com/thishome153/nodeapi.git
 git push -u origin master
 
 
+------------Firebird 
+
+ /opt/firebird/bin/gfix -online cadaster.gdb
