@@ -135,11 +135,40 @@ app.get('/h', function (req, res) {
 
 //*************************  Firebird  *************************
 app.get('/fb/egrz/find', function (req, res) {
+	
 	var tm = new Date();
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
-
+	var dbFB = require('./connectorFB');
+	dbFB.JustQuery(req.cn, function(err, results) {
+			if(err) { 
+			res.send(JSON.stringify({
+				"service": "nodeapi",
+				"Target": Firebird,				
+				"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),				
+				"stateText": "Server Error",				
+				"state":503,
+			}, null, 3));
+			return;}
+	
+			
+		res.send(JSON.stringify({
+				"service": "nodeapi" +ver,
+				"brand": "Fixosoft",
+				"description": "node.js Web server",
+				"Target": Firebird,
+				"query":  results,
+				"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),
+				"state":200
+			}, null, 3) );
+	
+			console.log('client ' + clientip + ' accepted GET ' + tm.toLocaleTimeString() + " : connection status ok");
+	
+		}
+		
+	);
+	/*
 	var Firebird = require('node-firebird');
 	var credents = require('./cfg/credents');
 	
@@ -166,6 +195,7 @@ Firebird.attach(credents.fb, function(err, db) {
     });
 
 });
+*/
 
 });
 
