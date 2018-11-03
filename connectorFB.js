@@ -32,7 +32,9 @@ exports.JustQuery = function (request_cn, callback) {
 exports.GetOBJbyCN = function (request_cn, callback) {
   console.log('function GetOBJbyCN (' + request_cn + ')');
     Firebird.attach(credents.fb, function(err, db) {
-        if (err)    throw err;
+        if (err) { //  throw err;
+                  callback(true, err); 
+        }
             // db = DATABASE
     db.query(" select  o.Status_obj, o.KN_obj,  o.id_obj from obj o, objlot ol "+
              " where (o.id_obj = ol.id_obj) and " +

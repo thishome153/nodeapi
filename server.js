@@ -148,7 +148,7 @@ app.get('/fb/egrz/find', function (req, res) {
 				"service": "nodeapi " + ver,
 				"Target": "Firebird",				
 				"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),				
-				"stateText": "Server Error",				
+				"stateText": "Server Error " + results.message,				
 				"state":503,
 			}, null, 3));
 			return;}

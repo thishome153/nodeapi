@@ -1,0 +1,44 @@
+//connector credentials example file
+//@2018 Fixosoft
+
+
+
+exports.cfg = {
+
+    host: "server_ip",
+    user: "username",
+    password: "userpassword",
+    database: 'database',
+    connectTimeout: 10000
+};
+
+exports.ads_cfg = {
+    host: "server_ip",
+    user: "username",
+    password: "userpassword",
+    database: 'EntityDB',
+    connectTimeout: 10000
+};
+
+//well known credentials. Default for firebird server
+exports.fb ={
+    host: "server_ip",
+    port: 3050,
+    user : 'SYSDBA',
+    password : 'masterkey',
+    database : 'database.gdb',
+    connectTimeout: 10000,
+    lowercase_keys : false, // set to true to lowercase keys
+    role :null,            // default
+    pageSize : 4096
+};
+
+
+
+exports.FBAliases = 
+{
+    "2601": "CADASTER_*.gdb",
+    "2604": "Cadaster_*.gdb" ,       
+    "2605": "cadaster*.gdb",    
+    "2606": "CADASTER_*.GDB"
+};
