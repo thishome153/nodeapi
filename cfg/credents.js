@@ -3,28 +3,28 @@
 
 
 exports.cfg = {
-    host: "10.66.77.4",
-    user: "gkndata_backend",
-    password: "123",
-    database: 'gkndatabase',
+    host: "host_ip",
+    user: "username",
+    password: "userpassword",
+    database: 'databasename',
     connectTimeout: 10000
 };
 
 exports.ads_cfg = {
-    host: "10.66.77.4",
-    user: "gkndata_backend",
-    password: "123",
-    database: 'Entity',
+    host: "host_ip",
+    user: "username",
+    password: "userpassword",
+    database: 'adsdatabasenae',
     connectTimeout: 10000
 };
 
 //well known credentials. Default for firebird server
 exports.fb ={
-    host: "10.66.77.4",
+    host: "host_ip",
     port: 3050,
     user : 'SYSDBA',
     password : 'masterkey',
-    database : '/mnt/win_c/databases/gzk/cadaster.gdb',
+    database : 'database.gdb',
     connectTimeout: 10000,
     lowercase_keys : false, // set to true to lowercase keys
     role :null,            // default
@@ -35,8 +35,8 @@ exports.fb ={
 
 exports.FBAliases = 
 {
-    "2601": "CADASTER_krasn_n.gdb",
-    "2604": "Cadaster_novoaleks_n.gdb" ,       
+    "2601": "CADASTER_****.gdb",
+    "2604": "Cadaster_****.gdb" ,       
     "2605": "cadaster.gdb",    
-    "2606": "CADASTER_IZOB.GDB"
+    "2606": "CADASTER_****.GDB"
 };
