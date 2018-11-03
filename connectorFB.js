@@ -33,7 +33,8 @@ exports.GetOBJbyCN = function (request_cn, callback) {
   console.log('function GetOBJbyCN (' + request_cn + ')');
     Firebird.attach(credents.fb, function(err, db) {
         if (err) { //  throw err;
-                  callback(true, err); 
+                  callback(true, err); //return error info in err
+                  return;
         }
             // db = DATABASE
     db.query(" select  o.Status_obj, o.KN_obj,  o.id_obj from obj o, objlot ol "+
@@ -45,7 +46,7 @@ exports.GetOBJbyCN = function (request_cn, callback) {
                 db.detach();
                 if(err) { 
                         console.log('firebird querying error: ' +err); 
-                        callback(true); 
+                        callback(true, err); 
                         return; 
                     }
                     if (results.length > 0)
