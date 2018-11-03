@@ -85,6 +85,10 @@ Then  push an existing repository from the command line
 git remote add origin https://github.com/thishome153/nodeapi.git
 git push -u origin master
 
+---------------------------------------- gitignore 
+
+temporary #/cfg/credents.js
+
 
 **************************************** Firebird 
 Here module https://www.npmjs.com/package/node-firebird

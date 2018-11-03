@@ -3,9 +3,9 @@
 var credents = require('./cfg/credents');
 var Firebird = require('node-firebird');
 
-
+//First stage function - for test only connectivity
 exports.JustQuery = function (request_cn, callback) {
-
+  console.log('firebird querying:....');
     Firebird.attach(credents.fb, function(err, db) {
 
             if (err)    throw err;
@@ -13,20 +13,51 @@ exports.JustQuery = function (request_cn, callback) {
     db.query("select * from obj where obj.id_obj = 'Mah2FF 3EE'", 
           function(err, results) 
              {
-                console.log('firebird querying:....');
+
               // IMPORTANT: close the connection
                 db.detach();
                 if(err) { 
-                        console.log(err); 
+                        console.log('firebird querying error: ' +err); 
                         callback(true); 
                         return; 
                     }
+                console.log('firebird querying: ok. Got results');                    
                 callback(false, results); // return results
              }
             );
     });
 };
-     
+  
+//Second stage function - 
+exports.GetOBJbyCN = function (request_cn, callback) {
+  console.log('function GetOBJbyCN (' + request_cn + ')');
+    Firebird.attach(credents.fb, function(err, db) {
+        if (err)    throw err;
+            // db = DATABASE
+    db.query(" select  o.Status_obj, o.KN_obj,  o.id_obj from obj o, objlot ol "+
+             " where (o.id_obj = ol.id_obj) and " +
+             " o.kn_obj =?",[request_cn], 
+          function(err, results) 
+             {
+              // IMPORTANT: close the connection
+                db.detach();
+                if(err) { 
+                        console.log('firebird querying error: ' +err); 
+                        callback(true); 
+                        return; 
+                    }
+                    if (results.length > 0)
+                    {
+                      console.log('firebird querying: ok. id_obj = ' + results[0]['ID_OBJ']);                    
+                    }
+                    else 
+                    console.log('firebird querying: ok. Empty results');                    
+                    // anyway return
+                    callback(false, results); // return results                    
+             }
+            );
+    });
+};
 
 
 /*

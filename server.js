@@ -1,7 +1,7 @@
 //node.js Web service 
 //@2018 Fixosoft
 servicename = "srv1@nodeapi"
-ver = "1.0.0.11";
+ver = "1.0.0.12";
 trafTotal =0;
 ts = new Date();// save startup time
 
@@ -126,7 +126,7 @@ app.get('/h', function (req, res) {
 		'<a href="find?CNumber=26:01:000000:511">server/find?CNumber=99:88:112233:65536</a> </li>'+
 
 		'<br> <li> To find EGRZ object: <br>' +
-		'<a href="fb/egrz/find?cn=26:01:0:536">server/fb/egrz/find?cn=26:01:0:536</a> </li>'+
+		'<a href="fb/egrz/find?cn=26:05:041308:1">server/fb/egrz/find?cn=26:05:041308:1</a> </li>'+
 		
 		'<br><br><br>' +
 		'@2018 Fixosoft'+
@@ -135,36 +135,47 @@ app.get('/h', function (req, res) {
 
 //*************************  Firebird  *************************
 app.get('/fb/egrz/find', function (req, res) {
-	
-	var tm = new Date();
+	var tm = new Date();	
+	console.log('Accepted GET ' + tm.toLocaleTimeString() + " : firebird query");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
 	var dbFB = require('./connectorFB');
-	dbFB.JustQuery(req.cn, function(err, results) {
+
+	dbFB.GetOBJbyCN(req.query.cn, function(err, results) {
 			if(err) { 
 			res.send(JSON.stringify({
-				"service": "nodeapi",
-				"Target": Firebird,				
+				"service": "nodeapi " + ver,
+				"Target": "Firebird",				
 				"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),				
 				"stateText": "Server Error",				
 				"state":503,
 			}, null, 3));
 			return;}
 	
-			
+			if (results.length >0)
+			{
 		res.send(JSON.stringify({
-				"service": "nodeapi " +ver,
-				"brand": "Fixosoft",
+				"service": "nodeapi " + ver,
 				"description": "node.js Web server",
 				"Target": "Firebird",
 				"query":  results,
 				"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),
 				"state":200
 			}, null, 3) );
-	
-			console.log('client ' + clientip + ' accepted GET ' + tm.toLocaleTimeString() + " : connection status ok");
-	
+		}
+		else 
+		res.send(JSON.stringify({
+			"service": "nodeapi " + ver,
+			"description": "node.js Web server",
+			"Target": "Firebird",
+			"queryContent": req.query.cn,
+			"queryTimeStamp": tm.toLocaleDateString()+" "+ tm.toLocaleTimeString(),
+			"stateText": "notFound",							
+			"state":404
+		}, null, 3) );
+
+
 		}
 		
 	);
