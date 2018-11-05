@@ -1,7 +1,7 @@
 //node.js Web service 
 //@2018 Fixosoft
 servicename = "srv1@nodeapi"
-ver = "1.0.0.12";
+ver = "1.0.0.13";
 trafTotal =0;
 ts = new Date();// save startup time
 
@@ -138,7 +138,6 @@ app.get('/fb/egrz/find', function (req, res) {
 	var tm = new Date();	
 	console.log('Accepted GET ' + tm.toLocaleTimeString() + " : firebird query");
 	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
 	var dbFB = require('./connectorFB');
 
@@ -165,6 +164,7 @@ app.get('/fb/egrz/find', function (req, res) {
 			}, null, 3) );
 		}
 		else 
+		{	
 		res.send(JSON.stringify({
 			"service": "nodeapi " + ver,
 			"description": "node.js Web server",
@@ -174,7 +174,7 @@ app.get('/fb/egrz/find', function (req, res) {
 			"stateText": "notFound",							
 			"state":404
 		}, null, 3) );
-
+		}
 
 		}
 		
