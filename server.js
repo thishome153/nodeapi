@@ -142,7 +142,7 @@ app.get('/fb/egrz/find', function (req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	var dbFB = require('./connectorFB');
 
-	dbFB.GetOBJbyCN(req.query.cn, function(err, results) {
+	dbFB.GetOBJFullbyCN(req.query.cn, function(err, results) {
 			if(err) { 
 			res.send(JSON.stringify({
 				"service": "nodeapi " + ver,

@@ -62,6 +62,73 @@ exports.GetOBJbyCN = function (request_cn, callback) {
     });
 };
 
+exports.GetOBJFullbyCN = function (request_cn, callback) {
+  console.log('function GetOBJFullbyCN (' + request_cn + ')');
+    Firebird.attach(credents.fb, function(err, db) {
+        if (err) { //  throw err;
+                  callback(true, err); //return error info in err
+                  return;
+        }
+            // db = DATABASE
+    db.query(" select  o.Status_obj, o.KN_obj,  o.id_obj from obj o, objlot ol "+
+             " where (o.id_obj = ol.id_obj) and " +
+             " o.kn_obj =?",[request_cn], 
+          function(err, results) 
+             {
+              // IMPORTANT: close the connection
+                //db.detach();
+                if(err) { 
+                        console.log('firebird querying error: ' +err); 
+                        callback(true, err); 
+                        return; 
+                    }
+                    if (results.length > 0)
+                    {
+                      var id_obj = results[0]['ID_OBJ'];
+                      console.log('firebird querying: ok. id_obj = ' + id_obj);                    
+                      db.query(" SELECT o.KN_obj, "+
+                              //alladr.fullatdname, 
+                              "ol.FULLADR, "+
+
+                               "  an.num1_asnum ||' кв. '|| an.num3_asnum ||' cтроен. ' || an.num2_asnum,"+
+                               " an.PlaceDisc_AsNum,  ol.SQTOCH_OBJLOT, ol.SQDECL_OBJLOT,  ol.NameVid_ObjLot, ol.Razrvid_ObjLot,"+
+                               " FAKTISP_OBJLOT, KNSOSTAV_OBJLOT,o.GID_OBJ "+
+                   " FROM OBJ o"+
+                   "  INNER JOIN OBJLOT ol ON (o.ID_OBJ = ol.ID_OBJ) "+
+                   "   INNER JOIN ASNUM an ON (an.ID_asnum = Ol.ID_asnum)"+
+                   "   INNER JOIN ASPRF ap ON (an.ID_prf = ap.ID_prf)"+
+                   "   INNER JOIN ASATD ATD ON (ATD.ID_ATD = ap.ID_ATD)"+
+                   //"   left JOIN GETFULLATD(ap.id_ATD) ALLAdr ON (1=1) "+
+                   "   where o.ID_Obj =?",
+                                  [id_obj], 
+                                  function(err2, results2)
+                                  {
+                                    if(err2) { 
+                                      console.log('firebird querying error: ' +err2); 
+                                      callback(true, err2); 
+                                      return; 
+                                  }
+
+                               
+                                      callback(false, results2); // return results                    
+                                      return;
+                                    
+
+                                  });
+                    }
+                    else 
+                    {
+                    console.log('firebird querying: ok. Empty results');                    
+                    callback(false, results); // return results                    
+                    return;
+                    }
+                    // anyway return
+             }
+            );
+
+            db.detach();
+    });
+};
 
 /*
 --------------------------------------------
