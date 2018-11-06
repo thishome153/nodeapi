@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Сведения о земельном участке</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+    <div style="margin:50px;">
+        <div class="jumbotron" style="padding:20px;">
+            <h2>Справочная информация в режиме archive</h2>
+            <table border=1 style="padding:10px;">
+                <tr>
+                    <td>Земельный участок</td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="8" cellpadding="0" width="100%">
+                            <tr>
+                                <td align="left" valign="top" width="250" nowrap="true">
+                                    Кадастровый номер:
+                                </td>
+                                <td width="75%" valign="top" id="td_cn">
+                                    td-cn
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td> Статус объекта:</td>
+                                <td width="200" id="td_state"> td-cn</td>
+                            </tr>
+                            <tr>
+                            <tr>
+                                <td> Дата постановки на кадастровый учет:</td>
+                                <td width="200" id="td_date"> td-cn</td>
+                            </tr>
+                            <tr>
+
+                            <tr>
+                                <td align="left" valign="top" width="250" nowrap="true">
+                                    <nobr>Категория земель:</nobr>
+                                </td>
+                                <td width="75%">
+                                    <b>Земли сельскохозяйственного назначения</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" valign="top" width="250" nowrap="true">
+                                    <nobr>Разрешенное использование:</nobr>
+                                </td>
+                                <td width="75%">
+                                    <b>Для сельскохозяйственного производства</b>
+                                </td>
+                            </tr>
+
+                    <td>Площадь декларированная</td>
+                    <td id="td_area"></td>
+                </tr>
+                <tr>
+                    <td>Площадь уточненная</td>
+                    <td id="td_area_toch"></td>
+                </tr>
+
+                <tr>
+                    <td>Вид разр. использования </td>
+                    <td id="td_purpose"></td>
+                </tr>
+                <tr>
+                    <td align="left" valign="top" width="250" nowrap="true">
+                        <nobr>Адрес (местоположение):</nobr>
+                    </td>
+                    <td width="75%" valign="top">
+                        <b> край р-н Труновский, с. , ул. Комарова,
+                        </b>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td align="left" valign="top" width="250">
+                        <nobr>Форма собственности:</nobr>
+                    </td>
+                    <td valign="top">
+                        <b>Частная</b>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div id="sw_r_enc" style="padding-left: 30px; background: transparent url('/wps/PA_RRORSrviceExtended/images/common/controls/mdir2-t.gif') no-repeat 10px 50%; line-height: 30px; color: #A0A0A0;cursor: pointer;"
+                            onclick="javascript:ns_Z7_01HA1A42KODT90AR30VLN22001_blockWrapperMax('r_enc');">
+                            <b>
+                                <font color="black">Права и ограничения</font>
+                            </b>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            </td>
+            </tr>
+            </table>
+            <br>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Новый запрос</a></p>
+        </div>
+    </div>
+</body>
+
+</html>
