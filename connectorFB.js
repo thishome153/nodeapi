@@ -3,6 +3,12 @@
 var credents = require('./cfg/credents');
 var Firebird = require('node-firebird');
 
+
+function TranslateCN(cn)
+{
+   return credents.FBAliases.basepath + credents.FBAliases[cn];
+}
+
 //First stage function - for test only connectivity
 exports.JustQuery = function (request_cn, callback) {
   console.log('firebird querying:....');
@@ -31,6 +37,7 @@ exports.JustQuery = function (request_cn, callback) {
 //Second stage function - 
 exports.GetOBJbyCN = function (request_cn, callback) {
   console.log('function GetOBJbyCN (' + request_cn + ')');
+ 
     Firebird.attach(credents.fb, function(err, db) {
         if (err) { //  throw err;
                   callback(true, err); //return error info in err
@@ -63,7 +70,11 @@ exports.GetOBJbyCN = function (request_cn, callback) {
 };
 
 exports.GetOBJFullbyCN = function (request_cn, callback) {
+  
+  credents.fb.database = TranslateCN( request_cn.substring(0,5));  
+  console.log('dbName for '+ request_cn.substring(0,5) +' = '+ credents.fb.database);
   console.log('function GetOBJFullbyCN (' + request_cn + ')');
+  
     Firebird.attach(credents.fb, function(err, db) {
         if (err) { //  throw err;
                   callback(true, err); //return error info in err
@@ -88,7 +99,7 @@ exports.GetOBJFullbyCN = function (request_cn, callback) {
                       console.log('firebird querying: ok. id_obj = ' + id_obj);                    
                       db.query(" SELECT o.KN_obj, "+
                               //alladr.fullatdname, 
-                              "ol.FULLADR, "+
+                              //"ol.FULLADR, "+
 
                                "  an.num1_asnum ||' кв. '|| an.num3_asnum ||' cтроен. ' || an.num2_asnum,"+
                                " an.PlaceDisc_AsNum,  "+
