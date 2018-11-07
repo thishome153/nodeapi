@@ -1,7 +1,7 @@
 //node.js Web service 
 //@2018 Fixosoft
 servicename = "srv1@nodeapi"
-ver = "1.0.0.14";
+ver = "1.0.0.15";
 trafTotal = 0;
 ts = new Date(); // save startup time
 var path    = require("path");
@@ -138,10 +138,17 @@ app.get('/h', function (req, res) {
 //*************************  Firebird  *************************
 app.get('/fb/egrz/find', function (req, res) {
 	var tm = new Date();
-	console.log('Accepted GET ' + tm.toLocaleTimeString() + " : firebird query");
+	console.log('Accepted GET ' + tm.toLocaleTimeString() + " - firebird query");
+	res.header("Access-Control-Allow-Origin", "*");
+	res.setHeader('Content-Type', 'application/json');
+/*
 	res.header("Access-Control-Allow-Origin", "*");
 	//res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Content-Type', 'text/html');	
+	res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+	res.setHeader('Expires', '-1');	
+*/
+
 	var dbFB = require('./connectorFB');
 
 	dbFB.GetOBJFullbyCN(req.query.cn, function (err, results) {

@@ -96,7 +96,8 @@ exports.GetOBJFullbyCN = function (request_cn, callback) {
 
             "  an.num1_asnum ||' кв. '|| an.num3_asnum ||' cтроен. ' || an.num2_asnum," +
             " an.PlaceDisc_AsNum,  " +
-            "ol.KLADR_RAYON, ol.KLADR_NASELPUNCT, ol.KLADR_STREET, ol.KLADR_HOME, ol.KLADR_INOE, " +
+            //"ol.KLADR_RAYON, "
+            //"ol.KLADR_NASELPUNCT, ol.KLADR_STREET, ol.KLADR_HOME, ol.KLADR_INOE, " +
             "ol.SQTOCH_OBJLOT, ol.SQTOCHDATE_OBJLOT , " +
             "ol.SQDECL_OBJLOT,  ol.NameVid_ObjLot, ol.Razrvid_ObjLot," +
             " FAKTISP_OBJLOT, KNSOSTAV_OBJLOT,o.GID_OBJ " +
