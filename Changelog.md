@@ -6,5 +6,9 @@ Now`ll continue develop of node.js service
 
 Also test from MaCOSX NATIVE VSCode working
 
-### 
-Begin conncetion to Firebird
+### v 1.0.0.12
+Begin conneсtivity to Firebird
+
+### v 1.0.0.16
+Introduce template engine EJS for transformig returning HTML
+

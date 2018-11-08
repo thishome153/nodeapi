@@ -8,6 +8,10 @@ Just follow these steps:
  ProxypassReverse http://10.66.77.47:3050                 /etc/httpd/conf/httpd.conf
 </Location>
 
+1. Add caching disable:
+
+
+
 ********************************************************************************************************************
 1. npm init
 
@@ -85,7 +89,7 @@ Then  push an existing repository from the command line
 git remote add origin https://github.com/thishome153/nodeapi.git
 git push -u origin master
 
----------------------------------------- gitignore 
+**************************************** gitignore 
 
 temporary #/cfg/credents.js
 
@@ -96,3 +100,8 @@ Here module https://www.npmjs.com/package/node-firebird
 install module npm i node-firebird
 
  /opt/firebird/bin/gfix -online cadaster.gdb
+
+**************************************** EJS template engine 
+ 1. npm install ejs
+  ???  npm install html
+ 2. download ejs.js for frontend (browser)
