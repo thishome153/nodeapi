@@ -100,12 +100,16 @@ exports.GetOBJFullbyCN = function (request_cn, callback) {
             //"ol.KLADR_NASELPUNCT, ol.KLADR_STREET, ol.KLADR_HOME, ol.KLADR_INOE, " +
             "ol.SQTOCH_OBJLOT, ol.SQTOCHDATE_OBJLOT , " +
             "ol.SQDECL_OBJLOT,  ol.NameVid_ObjLot, ol.Razrvid_ObjLot," +
+            " KLS.NAME_KLS, "+
             " FAKTISP_OBJLOT, KNSOSTAV_OBJLOT,o.GID_OBJ " +
             " FROM OBJ o" +
             "  INNER JOIN OBJLOT ol ON (o.ID_OBJ = ol.ID_OBJ) " +
             "   INNER JOIN ASNUM an ON (an.ID_asnum = Ol.ID_asnum)" +
             "   INNER JOIN ASPRF ap ON (an.ID_prf = ap.ID_prf)" +
             "   INNER JOIN ASATD ATD ON (ATD.ID_ATD = ap.ID_ATD)" +
+            "   INNER JOIN HAR ON (o.ID_OBJ = HAR.ID_OBJ) "+
+            "   INNER JOIN HARKAT ON (HAR.ID_HAR = HARKAT.ID_HAR) "+
+            "   INNER JOIN KLS ON (HARKAT.ID_KLS = KLS.ID_KLS) "+
             //"   left JOIN GETFULLATD(ap.id_ATD) ALLAdr ON (1=1) "+
             "   where o.ID_Obj =?",
             [id_obj],

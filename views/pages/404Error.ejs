@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 </head>
 <body>
     <div>
@@ -38,13 +38,40 @@
 
 
                     </div>
-                    <p><a class="btn btn-primary btn-lg" href="#" role="button">Новый запрос</a></p>
+                    <p><a class="btn btn-primary btn-lg" role="button" onclick="ShowNewFBQuery();" id="NewQueryButton"> Новый запрос</a></p>   
             </div>
 
 
         <br>
-
     </div>
+
+    <input class="form-control"
+    id="inputFB_cn" maxlength="200" value=<%=SearchCriteria %>
+    name="numregfb" placeholder="Номер записи"
+    style="display: none; width: 150px" type="text" /> 
+    <input type="button" class="btn btn-primary btn-lg" onclick="FindFBData(jQuery('#inputFB_cn').val());"
+      value="ЕГРЗ" id="buttonFB_cn" style="display: none; width: 120px"/>
+
+      <script>
+                            function ShowNewFBQuery() {
+                    jQuery('#inputFB_cn').show();
+                    jQuery('#buttonFB_cn').show();
+            };  
+
+
+            function FindFBData(cn) {
+                                            jQuery.get('/fb/egrz/find?cn=' + cn, function callback(data, status, jqXHR) {							
+                                                            if (jqXHR.status == 200) {
+                                $("body").html(data);
+                                                            };
+                                                    document.getElementById('buttonFB_cn').style.display = "none";
+                                                    document.getElementById('inputFB_cn').style.display = "none";
+                            
+                                            });
+                                            };
+
+      </script>
+
 </body>
 <footer>
         <h7>
@@ -52,5 +79,5 @@
         </h7>                       
 
 </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </html>
