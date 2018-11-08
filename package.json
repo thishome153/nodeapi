@@ -1,6 +1,6 @@
 {
   "name": "nodeapi",
-  "version": "1.0.0.16",
+  "version": "1.0.0.17",
   "description": "node.js webapi REST service",
   "main": "server.js",
   "scripts": {

@@ -46,9 +46,9 @@ app.get('/fb/egrz/find', function (req, res) {
 				return;
 			}
 
-
+			//render report page 'objlot' (human readable, HTML pretty of coarse):
 			if (results.length == 1) {
-
+ 				// call view engine 'ejs'
 				res.render('pages/objlot',
 				{cn : results[0].KN_OBJ,
 					NAMEVID_OBJLOT : results[0].NAMEVID_OBJLOT,
@@ -60,12 +60,12 @@ app.get('/fb/egrz/find', function (req, res) {
 					GID_OBJ 		: results[0].GID_OBJ
 				}
 				
-				); // call ejs engine
+				);
 
-				//load report page (human readable):				
-				//works ok:  res.sendFile(path.join(__dirname + '/objlotpage.html'));
-				// ****res.redirect(__dirname + '/objlotpage.html');
+							
+				//works ok: HTML static page res.sendFile(path.join(__dirname + '/objlotpage.html'));
 				/*
+				//works ok:  JSON response:
 				res.send(JSON.stringify({
 					"service": "nodeapi " + packageJSON.version,
 					"description": packageJSON.description,
@@ -76,6 +76,12 @@ app.get('/fb/egrz/find', function (req, res) {
 				}, null, 3));
 				*/
 			} else {
+				res.render('pages/404Error',
+				{
+				Target:"Firebird",
+				SearchCriteria: req.query.cn}
+				);
+				/*
 				res.send(JSON.stringify({
 					"service": "nodeapi " + packageJSON.version,
 					"description": packageJSON.description,
@@ -85,6 +91,7 @@ app.get('/fb/egrz/find', function (req, res) {
 					"stateText": "notFound",
 					"state": 404
 				}, null, 3));
+				*/
 			}
 
 		}
