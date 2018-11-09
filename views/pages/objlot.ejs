@@ -9,9 +9,9 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-<!--    <script src="http://www.geo-complex.com/js/ejs.js"></script> -->
+    <!--    <script src="http://www.geo-complex.com/js/ejs.js"></script> -->
 
 
 
@@ -19,149 +19,157 @@
 </head>
 
 <body>
-    <div style="margin:50px;">
-        <div class="jumbotron" style="padding:10px;">
-            <h2>Справочная информация в режиме archive</h2>
-            <table border=1 style="padding:10px;">
-                <tr>
-                    <td>Земельный участок</td>
-                </tr>
-                <tr>
-                    <td>
-                        <table border="0" cellspacing="8" cellpadding="0" width="100%">
-                            <tr>
-                                <td align="left" valign="top" width="250" nowrap="true">
-                                    Кадастровый номер:
-                                </td>
-                                <td width="75%" valign="top" id="td_cn">
-                                    <%=cn %>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td> Вид земельного участка</td>
-                                <td width="200" id="td_state"> 
-                                    <%=NAMEVID_OBJLOT%>
+    <div style="margin:20px;"  class="class="col-md-5"">
+        <section >
+            <div class="jumbotron">
+                <h2>Справочная информация в режиме archive</h2>
+                <table border=1 style="padding:20px;margin:2px" >
+                    <tr>
+                        <td>Земельный участок</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table border="0" cellspacing="8" cellpadding="0" width="100%">
+                                <tr>
+                                    <td align="left" valign="top" width="250" nowrap="true">
+                                        Кадастровый номер:
                                     </td>
-                            </tr>
-                            <tr>
-                            <tr>
-                                <td> Дата постановки на кадастровый учет:</td>
-                                <td width="200" id="td_date"> 
-                                    --
-                                </td>
-                            </tr>
-                            <tr>
+                                    <td width="75%" valign="top" id="td_cn">
+                                        <%=cn %>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td align="left" valign="top" width="250" nowrap="true">
-                                    <nobr>Категория земель:</nobr>
-                                </td>
-                                <td width="75%">
-                                    <%=NAME_KLS %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="left" valign="top" width="250" nowrap="true">
-                                    <nobr>Разрешенное использование:</nobr>
-                                </td>
-                                <td width="75%">
-                                    <%=RAZRVID_OBJLOT%>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td> Вид земельного участка</td>
+                                    <td width="200" id="td_state">
+                                        <%=NAMEVID_OBJLOT%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                <tr>
+                                    <td> Дата постановки на кадастровый учет:</td>
+                                    <td width="200" id="td_date">
+                                        --
+                                    </td>
+                                </tr>
+                                <tr>
 
-                    <td>Площадь декларированная</td>
-                    <td >
-                        <%=  SQDECL_OBJLOT%>
-                    </td>
+                                <tr>
+                                    <td align="left" valign="top" width="250" nowrap="true">
+                                        <nobr>Категория земель:</nobr>
+                                    </td>
+                                    <td width="75%">
+                                        <%=NAME_KLS %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" valign="top" width="250" nowrap="true">
+                                        <nobr>Разрешенное использование:</nobr>
+                                    </td>
+                                    <td width="75%">
+                                        <%=RAZRVID_OBJLOT%>
+                                    </td>
+                                </tr>
+
+                        <td>Площадь декларированная</td>
+                        <td>
+                            <%=  SQDECL_OBJLOT%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Площадь уточненная</td>
+                        <td>
+                            <%=SQTOCH_OBJLOT%>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Дата уточнения</td>
+                        <td>
+                            <%=SQTOCHDATE_OBJLOT%>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="left" valign="top" width="250" nowrap="true">
+                            <nobr>Адрес (местоположение):</nobr>
+                        </td>
+                        <td width="75%" valign="top">
+                            <%=PLACEDISC_ASNUM%>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td align="left" valign="top" width="250">
+                            <nobr>Форма собственности:</nobr>
+                        </td>
+                        <td valign="top">
+                            <b>Частная</b>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>GID</td>
+                        <td>
+                            <%=GID_OBJ%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="sw_r_enc" style="padding-left: 30px; background: transparent url('http://www.geo-complex.com/images/mdir2-t.gif') no-repeat 10px 50%; line-height: 30px; color: #A0A0A0;cursor: pointer;"
+                                onclick="javascript:ns_Z7_01HA1A42KODT90AR30VLN22001_blockWrapperMax('r_enc');">
+                                <b>
+                                    <font color="black">Права и ограничения</font>
+                                </b>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                </td>
                 </tr>
-                <tr>
-                    <td>Площадь уточненная</td>
-                    <td >
-                      <%=SQTOCH_OBJLOT%>
-                    </td>
-                </tr>
+                </table>
+                <br>
 
-             <tr>
-                 <td>Дата уточнения</td>
-                 <td>
-                     <%=SQTOCHDATE_OBJLOT%>
-                 </td>
-             </tr>
-
-                <tr>
-                    <td align="left" valign="top" width="250" nowrap="true">
-                        <nobr>Адрес (местоположение):</nobr>
-                    </td>
-                    <td width="75%" valign="top">
-                       <%=PLACEDISC_ASNUM%>
-                    </td>
-                </tr>
+            </div>
+            <p><a class="btn btn-primary btn-lg" role="button" onclick="ShowNewFBQuery();" id="NewQueryButton"> Новый
+                    запрос</a></p>
 
 
-                <tr>
-                    <td align="left" valign="top" width="250">
-                        <nobr>Форма собственности:</nobr>
-                    </td>
-                    <td valign="top">
-                        <b>Частная</b>
-                    </td>
-                </tr>
+            <input class="form-control" id="inputFB_cn" maxlength="200" value=<%=cn %>
+            name="numregfb" placeholder="Номер записи"
+            style="display: none; width: 150px" type="text" />
+            <input type="button" class="btn btn-primary btn-lg" onclick="FindFBData(jQuery('#inputFB_cn').val());"
+                value="ЕГРЗ" id="buttonFB_cn" style="display: none; width: 120px" />
 
-                <tr>
-                    <td>GID</td>
-                    <td>
-                        <%=GID_OBJ%>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="sw_r_enc" style="padding-left: 30px; background: transparent url('http://www.geo-complex.com/images/mdir2-t.gif') no-repeat 10px 50%; line-height: 30px; color: #A0A0A0;cursor: pointer;"
-                            onclick="javascript:ns_Z7_01HA1A42KODT90AR30VLN22001_blockWrapperMax('r_enc');">
-                            <b>
-                                <font color="black">Права и ограничения</font>
-                            </b>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            </td>
-            </tr>
-            </table>
-            <br>
-
-        </div>
-        <p><a class="btn btn-primary btn-lg" role="button" onclick="ShowNewFBQuery();" id="NewQueryButton"> Новый запрос</a></p>   
-        
-        
-        <input class="form-control"
-        id="inputFB_cn" maxlength="200" value=<%=cn %>
-        name="numregfb" placeholder="Номер записи"
-        style="display: none; width: 150px" type="text" /> 
-        <input type="button" class="btn btn-primary btn-lg" onclick="FindFBData(jQuery('#inputFB_cn').val());"
-          value="ЕГРЗ" id="buttonFB_cn" style="display: none; width: 120px"/>
-
-          <script>
-				function ShowNewFBQuery() {
-                        jQuery('#inputFB_cn').show();
-                        jQuery('#buttonFB_cn').show();
-                };  
+            <script>
+                function ShowNewFBQuery() {
+                    jQuery('#inputFB_cn').show();
+                    jQuery('#buttonFB_cn').show();
+                };
 
 
                 function FindFBData(cn) {
-						jQuery.get('/fb/egrz/find?cn=' + cn, function callback(data, status, jqXHR) {							
-								if (jqXHR.status == 200) {
-                                    $("body").html(data);
-								};
-							document.getElementById('buttonFB_cn').style.display = "none";
-							document.getElementById('inputFB_cn').style.display = "none";
-				
-						});
-						};
+                    if ((window.location.host == 'localhost:3050') ||
+                        (window.location.host == '127.0.0.1:3050'))
+                        reqUrlprefix = ""
+                    else reqUrlprefix = "/node";
 
-          </script>
+                    jQuery.get(reqUrlprefix + '/fb/egrz/find?cn=' + cn, function callback(data, status, jqXHR) {
+                        if (jqXHR.status == 200) {
+                            document.getElementById('buttonFB_cn').style.display = "none";
+                            $("body").html(data);
+                            //document.getElementById('inputFB_cn').style.display = "none";                        
+                        };
+
+
+                    });
+                };
+            </script>
+        </section>
     </div>
-   
+
 </body>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
 </html>

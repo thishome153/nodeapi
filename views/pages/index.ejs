@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <title>API help page</title>
+    <img alt="node_logo.png" src="http://www.geo-complex.com/images/node_logo.png" </img> <br>
+</head>
+
+<body>
+    <div style="margin:20px;" class="col-md-5">
+        <!-- «col-md-7»указывают, что блоки представляют из себя колонки шириной 7 относительно родительского контейнера -->
+
+        <div class="jumbotron">
+            <h2>
+                <%=servicename%> v
+                <%=version %>
+            </h2>
+            <br>
+            <h7> Service start at:
+                <%=startdate %>
+                <br> listen port:
+                <%=port %>
+            </h7>
+            <br> <br> Please specify you request.<br>
+
+            <br> Example:
+
+            <br>
+            <li> To find object: <br>
+                <a onclick="FindGKNData('26:01:000000:511');">server/node/find?CNumber=99:88:112233:65536</a> </li>
+            <div id="gkn_res">  </div>
+            <br>
+            <li> To find EGRZ object: <br>
+                <a onclick="FindFBData('26:05:041308:1');">server/node/fb/egrz/find?cn=26:05:041308:1</a> </li>
+            <br>
+            <li>
+                To find here:
+                <input class="form-control" id="inputFB_cn" maxlength="200" value='26:05:041308:1' name="numregfb"
+                    placeholder="Номер записи" style="display: inline-block; width: 150px" type="text" />
+
+                <a class="btn btn-primary btn-sm" role="button" onclick="FindFBData(jQuery('#inputFB_cn').val());" id="NewQueryButton">
+                    Найти
+                    объект</a>
+            </li>
+        </div>
+    </div>
+    <br><br><br>
+</body>
+<footer>
+    @2018 Fixosoft
+</footer>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script>
+    function FindFBData(cn) {
+        document.getElementById('NewQueryButton').style.display = "none";
+
+        if ((window.location.host == 'localhost:3050') ||
+            (window.location.host == '127.0.0.1:3050'))
+            reqUrlprefix = ""
+        else reqUrlprefix = "/node";
+
+        jQuery.get(reqUrlprefix + '/fb/egrz/find?cn=' + cn, function callback(data, status, jqXHR) {
+            if (jqXHR.status == 200) {
+                $("body").html(data);
+                //document.getElementById('inputFB_cn').style.display = "none";                        
+            };
+        });
+    };
+
+    function FindGKNData(cn) {
+        if ((window.location.host == 'localhost:3050') ||
+            (window.location.host == '127.0.0.1:3050'))
+            reqUrlprefix = ""
+        else reqUrlprefix = "/node";
+
+        jQuery.get(reqUrlprefix + '/find?CNumber=' + cn, function callback(data, status, jqXHR) {
+            if (jqXHR.status == 200) {
+                //Parse JSON
+                /*
+                var queryResult = jQuery.parseJSON(jqXHR.responseText);
+                jQuery.each(queryResult.query, function (index, value) {
+                    document.getElementById('gkn_res').innerHTML = value.lot_kn + " (" + value.lottable_id +
+                        ")";
+                });
+                */
+                document.getElementById('gkn_res').innerHTML = jqXHR.responseText;
+            };
+
+
+        });
+    };
+</script>
+
+</html>
