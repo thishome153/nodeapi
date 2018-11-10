@@ -21,8 +21,8 @@ var db = require('./connector3');
 //TODO: need format parameter j- JSON h - HTML
 app.get('/fb/egrz/find', function (req, res) {
 	var tm = new Date();
-	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;	
-	console.log(tm.toLocaleTimeString() +'. Client ' + clientip + ' request GET...	- firebird query ');	
+	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
+	console.log(tm.toLocaleTimeString() + '. Client ' + clientip + ' request GET...	- firebird query ');
 
 	res.header("Access-Control-Allow-Origin", "*");
 	/*
@@ -35,9 +35,9 @@ app.get('/fb/egrz/find', function (req, res) {
 
 	var dbFB = require('./connectorFB');
 
-	dbFB.GetOBJFullbyCN(req.query.cn, function (err, results) {
+	dbFB.GetOBJFullbyCNpool(req.query.cn, function (err, results) {
 			if (err) {
-				res.setHeader('Content-Type', 'application/json');				
+				res.setHeader('Content-Type', 'application/json');
 				res.send(JSON.stringify({
 					"service": "nodeapi " + packageJSON.version,
 					"Target": "Firebird",
@@ -49,53 +49,56 @@ app.get('/fb/egrz/find', function (req, res) {
 			}
 			//otherwise, response`ll in HTML:
 			//(human readable, HTML pretty of coarse):
-			res.setHeader('Content-Type', 'text/html');
+
 			if (results.length == 1) {
 
 				// call view engine 'ejs'
 				//render report page 'objlot' 
-				res.render('pages/objlot', {
-					cn: results[0].KN_OBJ,
-					NAMEVID_OBJLOT: results[0].NAMEVID_OBJLOT,
-					SQDECL_OBJLOT: results[0].SQDECL_OBJLOT,
-					SQTOCH_OBJLOT: results[0].SQTOCH_OBJLOT,
-					SQTOCHDATE_OBJLOT: results[0].SQTOCHDATE_OBJLOT,
-					RAZRVID_OBJLOT: results[0].RAZRVID_OBJLOT,
-					NAME_KLS: results[0].NAME_KLS,
-					PLACEDISC_ASNUM: results[0].PLACEDISC_ASNUM,
-					GID_OBJ: results[0].GID_OBJ
-				});
+				if (req.query.f == 'html') {
+					res.setHeader('Content-Type', 'text/html');
+					res.render('pages/objlot', {
+						cn: results[0].KN_OBJ,
+						NAMEVID_OBJLOT: results[0].NAMEVID_OBJLOT,
+						SQDECL_OBJLOT: results[0].SQDECL_OBJLOT,
+						SQTOCH_OBJLOT: results[0].SQTOCH_OBJLOT,
+						SQTOCHDATE_OBJLOT: results[0].SQTOCHDATE_OBJLOT,
+						RAZRVID_OBJLOT: results[0].RAZRVID_OBJLOT,
+						NAME_KLS: results[0].NAME_KLS,
+						PLACEDISC_ASNUM: results[0].PLACEDISC_ASNUM,
+						GID_OBJ: results[0].GID_OBJ
+					});
+				} else {
+					res.setHeader('Content-Type', 'application/json');
+					//works ok:  JSON response:
+					res.send(JSON.stringify({
+						"service": "nodeapi " + packageJSON.version,
+						"description": packageJSON.description,
+						"Target": "Firebird",
+						"query": results,
+						"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
+						"state": 200
+					}, null, 3));
+				}
 
 
-				//works ok: HTML static page res.sendFile(path.join(__dirname + '/objlotpage.html'));
-
-				/*
-				//works ok:  JSON response:
-				res.send(JSON.stringify({
-					"service": "nodeapi " + packageJSON.version,
-					"description": packageJSON.description,
-					"Target": "Firebird",
-					"query": results,
-					"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
-					"state": 200
-				}, null, 3));
-				*/
 			} else {
-				res.render('pages/404Error', {
-					Target: "Firebird",
-					SearchCriteria: req.query.cn
-				});
-				/*
-				res.send(JSON.stringify({
-					"service": "nodeapi " + packageJSON.version,
-					"description": packageJSON.description,
-					"Target": "Firebird",
-					"queryContent": req.query.cn,
-					"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
-					"stateText": "notFound",
-					"state": 404
-				}, null, 3));
-				*/
+				if (req.query.f == 'html') {
+					res.setHeader('Content-Type', 'text/html');
+					res.render('pages/404Error', {
+						Target: "Firebird",
+						SearchCriteria: req.query.cn
+					});
+				} else {
+					res.send(JSON.stringify({
+						"service": "nodeapi " + packageJSON.version,
+						"description": packageJSON.description,
+						"Target": "Firebird",
+						"queryContent": req.query.cn,
+						"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
+						"stateText": "notFound",
+						"state": 404
+					}, null, 3));
+				}
 			}
 
 		}
@@ -107,8 +110,8 @@ app.get('/fb/egrz/find', function (req, res) {
 //*************************   /info - query for info about GKNData (mySQL)  *************************
 app.get('/info', function (req, res) {
 	var tm = new Date();
-	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;	
-	console.log(tm.toLocaleTimeString() +'. Client ' + clientip + ' request GET...	/info ');	
+	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
+	console.log(tm.toLocaleTimeString() + '. Client ' + clientip + ' request GET...	/info ');
 	//res.header("Access-Control-Allow-Origin", "http://10.66.77.47;http://www.geo-complex.com");
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
@@ -144,11 +147,7 @@ app.get('/info', function (req, res) {
 			"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
 			"state": 200
 		}, null, 3));
-
-		console.log('client ' + clientip + ' accepted GET ' + tm.toLocaleTimeString() + " : connection status ok");
-
 	});
-
 });
 
 app.get('/subrf', function (req, res) {
@@ -199,16 +198,16 @@ app.get('/subrf', function (req, res) {
 //************************* root (index`ll show help  (test only, no Mysql links)  *************************
 app.get('/', function (req, res) {
 	var tm = new Date();
-	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;	
-	console.log(tm.toLocaleTimeString() +'. Client ' + clientip + ' request GET...	/"index"');
+	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
+	console.log(tm.toLocaleTimeString() + '. Client ' + clientip + ' request GET...	/"index"');
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'text/html');
 
 	res.render('pages/index', {
 		version: packageJSON.version,
-		servicename : packageJSON.name,
-		startdate :  ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
-		port : port
+		servicename: packageJSON.name,
+		startdate: ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
+		port: port
 	});
 
 });
@@ -224,7 +223,7 @@ app.get('/find', function (req, res) {
 
 	var tm = new Date();
 	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log('Client ' + clientip + 'detected request GET.../find');	
+	console.log('Client ' + clientip + 'detected request GET.../find');
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
 

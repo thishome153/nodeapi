@@ -143,6 +143,92 @@ exports.GetOBJFullbyCN = function (request_cn, callback) {
   });
 };
 
+//-----------polling versions 
+exports.GetOBJFullbyCNpool = function (request_cn, callback) {
+
+  credents.fb.database = TranslateCN(request_cn.substring(0, 5));
+  //  console.log('dbName for ' + request_cn.substring(0, 5) + ' = ' + credents.fb.database);
+  // 5 = the number is count of opened sockets
+  var pool = Firebird.pool(5, credents.fb);
+
+  // Get a free pool
+  pool.get(function (err, db) {
+
+    if (err) { //  throw err;
+      console.log('firebird querying: Error attach ():' + err);
+      callback(true, err); //return error info in err
+      return;
+    }
+    // db = DATABASE
+    db.query(" select  o.Status_obj, o.KN_obj,  o.id_obj from obj o, objlot ol " +
+      " where (o.id_obj = ol.id_obj) and " +
+      " o.kn_obj =?", [request_cn],
+      function (err, results) {
+        // IMPORTANT: close the connection
+        db.detach();
+        if (results.length === 1) {
+          var id_obj = results[0]['ID_OBJ'];
+          console.log('firebird querying: ' + request_cn + ' object ok.');
+          console.log('firebird querying: Select full query for  id_obj = ' + id_obj + '....');
+          pool.get(function (err, db2) {
+            db2.query(" SELECT o.KN_obj, " +
+              //alladr.fullatdname, 
+              //"ol.FULLADR, "+
+              "  an.num1_asnum ||' кв. '|| an.num3_asnum ||' cтроен. ' || an.num2_asnum," +
+              " an.PlaceDisc_AsNum,  " +
+              //"ol.KLADR_RAYON, "
+              //"ol.KLADR_NASELPUNCT, ol.KLADR_STREET, ol.KLADR_HOME, ol.KLADR_INOE, " +
+              "ol.SQTOCH_OBJLOT, ol.SQTOCHDATE_OBJLOT , " +
+              "ol.SQDECL_OBJLOT,  ol.NameVid_ObjLot, ol.Razrvid_ObjLot," +
+              " KLS.NAME_KLS, " +
+              " FAKTISP_OBJLOT, KNSOSTAV_OBJLOT,o.GID_OBJ " +
+              " FROM OBJ o" +
+              "  INNER JOIN OBJLOT ol ON (o.ID_OBJ = ol.ID_OBJ) " +
+              "   INNER JOIN ASNUM an ON (an.ID_asnum = Ol.ID_asnum)" +
+              "   INNER JOIN ASPRF ap ON (an.ID_prf = ap.ID_prf)" +
+              "   INNER JOIN ASATD ATD ON (ATD.ID_ATD = ap.ID_ATD)" +
+              "   INNER JOIN HAR ON (o.ID_OBJ = HAR.ID_OBJ) " +
+              "   INNER JOIN HARKAT ON (HAR.ID_HAR = HARKAT.ID_HAR) " +
+              "   INNER JOIN KLS ON (HARKAT.ID_KLS = KLS.ID_KLS) " +
+              //"   left JOIN GETFULLATD(ap.id_ATD) ALLAdr ON (1=1) "+
+              "   where o.ID_Obj =?",
+              [id_obj],
+              function (err2, results2) {
+                db2.detach();
+                if (err2) {
+                  console.log('firebird querying error: ' + err2);
+                  callback(true, err2);
+                  return;
+                }
+                console.log('firebird querying: success. Detach base');
+                callback(false, results2); // return results                    
+                return;
+
+
+              });
+          });
+
+
+
+        } else {
+          console.log('firebird querying : not found ' + request_cn);
+          callback(false, results);
+          return;
+        }
+
+      }
+
+    );
+  });
+
+
+  // Destroy pool
+  pool.destroy();
+};
+
+
+
+
 /*
 --------------------------------------------
 Select  o.Status_obj, o.KN_obj,  o.id_obj

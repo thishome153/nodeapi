@@ -38,14 +38,18 @@
             <div id="gkn_res">  </div>
             <br>
             <li> To find EGRZ object: <br>
-                <a onclick="FindFBData('26:05:041308:1');">server/node/fb/egrz/find?cn=26:05:041308:1</a> </li>
+                JSON format <br>
+                <a onclick="FindFBData('json','26:05:041308:1');">server/node/fb/egrz/find?f=json&cn=26:05:041308:1</a> </li>
+                <div id="fb_res">  </div>
+                HTML format <br>
+                <a onclick="FindFBData('html', '26:05:041308:1');">server/node/fb/egrz/find?f=html&cn=26:05:041308:1</a> </li>
             <br>
             <li>
                 To find here:
                 <input class="form-control" id="inputFB_cn" maxlength="200" value='26:05:041308:1' name="numregfb"
                     placeholder="Номер записи" style="display: inline-block; width: 150px" type="text" />
 
-                <a class="btn btn-primary btn-sm" role="button" onclick="FindFBData(jQuery('#inputFB_cn').val());" id="NewQueryButton">
+                <a class="btn btn-primary btn-sm" role="button" onclick="FindFBData('html',jQuery('#inputFB_cn').val());" id="NewQueryButton">
                     Найти
                     объект</a>
             </li>
@@ -58,18 +62,18 @@
 </footer>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script>
-    function FindFBData(cn) {
-        document.getElementById('NewQueryButton').style.display = "none";
-
+    function FindFBData(format, cn) {
         if ((window.location.host == 'localhost:3050') ||
             (window.location.host == '127.0.0.1:3050'))
             reqUrlprefix = ""
         else reqUrlprefix = "/node";
 
-        jQuery.get(reqUrlprefix + '/fb/egrz/find?cn=' + cn, function callback(data, status, jqXHR) {
+        jQuery.get(reqUrlprefix + '/fb/egrz/find?f='+ format+ '&cn=' + cn, function callback(data, status, jqXHR) {
             if (jqXHR.status == 200) {
+                 if (format ==='html')   
                 $("body").html(data);
-                //document.getElementById('inputFB_cn').style.display = "none";                        
+                else 
+                document.getElementById('fb_res').innerHTML = jqXHR.responseText;
             };
         });
     };

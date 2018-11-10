@@ -155,7 +155,7 @@
                         reqUrlprefix = ""
                     else reqUrlprefix = "/node";
 
-                    jQuery.get(reqUrlprefix + '/fb/egrz/find?cn=' + cn, function callback(data, status, jqXHR) {
+                    jQuery.get(reqUrlprefix + '/fb/egrz/find?f=html&cn=' + cn, function callback(data, status, jqXHR) {
                         if (jqXHR.status == 200) {
                             document.getElementById('buttonFB_cn').style.display = "none";
                             $("body").html(data);
