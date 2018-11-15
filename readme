@@ -94,6 +94,36 @@ git push -u origin master
 temporary #/cfg/credents.js
 
 
+**************************************** Permission denied (publickey)
+ Verify your connection by typing:
+[root@c7 spheregeo]# ssh -T git@github.com
+Permission denied (publickey).
+New key:
+[root@c7 spheregeo]# ssh-keygen -t rsa -b 4096 -C "serg.home153@gmail.com"
+
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+81:c7:8c:d8:b9:3b:1d:28:86:d5:b1:a2:e8:3f:9e:06 serg.home153@gmail.com
+The key's randomart image is:
++--[ RSA 4096]----+
+|      .          |
+|     + O         |
+|    + B =        |
+| . + . + .       |
+|. o o o S        |
+|.E . . o .       |
+| ..   o .        |
+|  .o.  .         |
+|  o+.            |
++-----------------+
+[root@c7 spheregeo]# ssh-add /root/.ssh/id_rsa
+Could not open a connection to your authentication agent.
+
 **************************************** Firebird 
 Here module https://www.npmjs.com/package/node-firebird
 
