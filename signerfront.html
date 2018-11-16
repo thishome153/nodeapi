@@ -1,0 +1,228 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" meta charset="UTF-8" />
+    <script language="javascript" src="http://www.geo-complex.com/js/cades/es6-promise.min.js"></script>
+    <script language="javascript">window.allow_firefox_cadesplugin_async=1</script>
+    <script language="javascript" src="http://www.geo-complex.com/js/cades/cadesplugin_api.js"></script>
+    <script language="javascript" src="http://www.geo-complex.com/js/cades/Code.js"></script>
+    <title> Signer page</title>
+</head>
+
+<body>
+    <div style="margin:20px;" class="col-md-5">
+        <!-- «col-md-7»указывают, что блоки представляют из себя колонки шириной 7 относительно родительского контейнера -->
+
+        <div class="jumbotron">
+
+
+            <img id="info_img" src="http://www.geo-complex.com/dep/images/application_information.png" alt="" />
+            <div id="info_msg" style="text-align:center;">
+                <span id="PlugInEnabledTxt">Плагин не загружен</span>
+                <img src="http://www.geo-complex.com/dep/images/red_dot.png" width="10" height="10" alt="Плагин не загружен"
+                    id="PluginEnabledImg" />
+                <br>
+                <span id="PlugInVersionTxt" lang="ru"> </span>
+                <span id="CSPVersionTxt" lang="ru"> </span>
+                <br>
+                <span id="CSPNameTxt" lang="ru"> </span>
+            </div>
+
+            <div id="boxdiv" style="display:none">
+                    <span id="errorarea">
+                        У вас отсутствуют личные сертификаты. Вы можете 
+                        <a href="#" onClick="Common_RetrieveCertificate();" style="color:#0837ff"> получить</a> 
+                        сертификат от тестового УЦ, предварительно установив 
+                        <a href="/certsrv/certnew.cer?ReqID=CACert&Enc=bin" style="color:#0837ff">корневой сертификат тестового УЦ</a> 
+                        в доверенные.
+                    </span>
+                </div>            
+
+
+
+            <p id="info_msg">Загрузить файл:</p>
+            <div id="item_border">
+                <input id="openFileButton" type='file' onchange="openFile(event)" style="width:100%">
+                <script>
+                    var openFile = function (event) {
+                        fileContent = undefined;
+                        var input = event.target;
+                        var reader = new FileReader();
+                        reader.readAsDataURL(input.files[0]);
+                        reader.onload = function () {
+                            var header = ";base64,";
+                            var fileData = reader.result;
+                            fileContent = fileData.substr(fileData.indexOf(header) + header.length);
+                        };
+                    };
+                </script>
+            </div>
+            <p></p>
+
+
+
+            <li>
+                Sign file :
+                <input class="form-control" id="CertName" maxlength="200" value='Янчук Сергей Петрович' name="numregfb"
+                    placeholder="Номер записи" style="display: inline-block; width: 200px" type="text" />
+
+                <a class="btn btn-primary btn-sm" role="button" onclick="run();" id="NewQueryButton">
+                    Выберите файл</a>
+            </li>
+
+
+
+
+            <p id="info_msg" name="SignatureTitle">Подпись:</p>
+            <div id="item_border">
+                <textarea id="SignatureTxtBox" style="font-size:9pt;height:600px;width:100%;resize:none;border:0;">
+                </textarea>
+                <script language="javascript">
+                    var txtDataToSign = "Hello World";
+                    document.getElementById("SignatureTxtBox").innerHTML = "";
+                    var canPromise = !!window.Promise;
+                    if (isEdge()) {
+                        ShowEdgeNotSupported();
+                    } else {
+                        if (canPromise) {
+                            cadesplugin.then(function () {
+                                    Common_CheckForPlugIn();
+                                },
+                                function (error) {
+                                    document.getElementById('PluginEnabledImg').setAttribute("src",
+                                        "http://www.geo-complex.com/dep/images/red_dot.png");
+                                    document.getElementById('PlugInEnabledTxt').innerHTML = error;
+                                }
+                            );
+                        } else {
+                            window.addEventListener("message", function (event) {
+                                    if (event.data == "cadesplugin_loaded") {
+                                        CheckForPlugIn_NPAPI();
+                                    } else if (event.data == "cadesplugin_load_error") {
+                                        document.getElementById('PluginEnabledImg').setAttribute("src",
+                                            "http://www.geo-complex.com/dep/images/red_dot.png");
+                                        document.getElementById('PlugInEnabledTxt').innerHTML =
+                                            "Плагин не загружен";
+                                    }
+                                },
+                                false);
+                            window.postMessage("cadesplugin_echo_request", "*");
+                        }
+                    }
+                </script>
+            </div>
+            <p></p>
+
+
+        </div>
+    </div>
+    <br><br><br>
+</body>
+<footer>
+    @2018 Fixosoft
+</footer>
+
+<script>
+    function FindFBData(format, cn) {
+        if ((window.location.host == 'localhost:3050') ||
+            (window.location.host == '127.0.0.1:3050'))
+            reqUrlprefix = ""
+        else reqUrlprefix = "/node";
+
+        jQuery.get(reqUrlprefix + '/fb/egrz/find?f=' + format + '&cn=' + cn, function callback(data, status, jqXHR) {
+            if (jqXHR.status == 200) {
+                if (format === 'html')
+                    $("body").html(data);
+                else
+                    document.getElementById('fb_res').innerHTML = jqXHR.responseText;
+            };
+        });
+    };
+
+    function FindGKNData(cn) {
+        if ((window.location.host == 'localhost:3050') ||
+            (window.location.host == '127.0.0.1:3050'))
+            reqUrlprefix = ""
+        else reqUrlprefix = "/node";
+
+        jQuery.get(reqUrlprefix + '/find?CNumber=' + cn, function callback(data, status, jqXHR) {
+            if (jqXHR.status == 200) {
+                //Parse JSON
+                /*
+                var queryResult = jQuery.parseJSON(jqXHR.responseText);
+                jQuery.each(queryResult.query, function (index, value) {
+                    document.getElementById('gkn_res').innerHTML = value.lot_kn + " (" + value.lottable_id +
+                        ")";
+                });
+                */
+                document.getElementById('gkn_res').innerHTML = jqXHR.responseText;
+            };
+
+
+        });
+    };
+
+    //CADES 
+
+
+    var CADESCOM_CADES_BES = 1;
+    var CAPICOM_CURRENT_USER_STORE = 2;
+    var CAPICOM_MY_STORE = "My";
+    var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
+    var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
+
+    function SignCreate(certSubjectName, dataToSign) {
+        return new Promise(function (resolve, reject) {
+            cadesplugin.async_spawn(function* (args) {
+                try {
+                    var oStore = yield cadesplugin.CreateObjectAsync("CAdESCOM.Store");
+                    yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,
+                        CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+
+                    var CertificatesObj = yield oStore.Certificates;
+                    var oCertificates = yield CertificatesObj.Find(
+                        CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
+
+                    var Count = yield oCertificates.Count;
+                    if (Count == 0) {
+                        throw ("Certificate not found: " + args[0]);
+                    }
+                    var oCertificate = yield oCertificates.Item(1);
+                    var oSigner = yield cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
+                    yield oSigner.propset_Certificate(oCertificate);
+
+                    var oSignedData = yield cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
+                    yield oSignedData.propset_Content(dataToSign);
+
+                    var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_CADES_BES);
+
+                    yield oStore.Close();
+
+                    args[2](sSignedMessage);
+                } catch (e) {
+                    args[3]("Failed to create signature. Error: " + cadesplugin.getLastError(err));
+                }
+            }, certSubjectName, dataToSign, resolve, reject);
+        });
+    }
+
+    function run() {
+        var oCertName = document.getElementById("CertName");
+        var sCertName = oCertName.value;
+        if ("" == sCertName) {
+            alert("Введите имя сертификата (CN).");
+            return;
+        }
+        var thenable = SignCreate(sCertName, "Message");
+
+        thenable.then(
+            function (result) {
+                document.getElementById("signature").innerHTML = result;
+            },
+            function (result) {
+                document.getElementById("signature").innerHTML = result;
+            });
+    }
+</script>
+
+</html>
