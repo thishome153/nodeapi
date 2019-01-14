@@ -34,8 +34,8 @@ app.get('/fb/egrz/find', function (req, res) {
 	*/
 
 	var dbFB = require('./connectorFB');
-
-	dbFB.GetOBJFullbyCNpool(req.query.cn, function (err, results) {
+	endFunc:
+		dbFB.GetOBJFullbyCNpool(req.query.cn, function (err, results) {
 			if (err) {
 				res.setHeader('Content-Type', 'application/json');
 				res.send(JSON.stringify({
@@ -45,65 +45,67 @@ app.get('/fb/egrz/find', function (req, res) {
 					"stateText": "Server Error " + results.message,
 					"state": 503,
 				}, null, 3));
-				return;
-			}
+				//return;    // - return will returned to call back callbacker
+				// else instead of return.... i'm so stupied
+			} 
+			else
 			//otherwise, response`ll in HTML:
 			//(human readable, HTML pretty of coarse):
+			{
+				if (results.length == 1) {
 
-			if (results.length == 1) {
+					// call view engine 'ejs'
+					//render report page 'objlot' 
+					if (req.query.f == 'html') {
+						res.setHeader('Content-Type', 'text/html');
+						res.render('pages/objlot', {
+							cn: results[0].KN_OBJ,
+							NAMEVID_OBJLOT: results[0].NAMEVID_OBJLOT,
+							SQDECL_OBJLOT: results[0].SQDECL_OBJLOT,
+							SQTOCH_OBJLOT: results[0].SQTOCH_OBJLOT,
+							SQTOCHDATE_OBJLOT: results[0].SQTOCHDATE_OBJLOT,
+							RAZRVID_OBJLOT: results[0].RAZRVID_OBJLOT,
+							NAME_KLS: results[0].NAME_KLS,
+							PLACEDISC_ASNUM: results[0].PLACEDISC_ASNUM,
+							GID_OBJ: results[0].GID_OBJ
+						});
+					} else {
+						res.setHeader('Content-Type', 'application/json');
+						//works ok:  JSON response:
+						res.send(JSON.stringify({
+							"service": "nodeapi " + packageJSON.version,
+							"description": packageJSON.description,
+							"Target": "Firebird",
+							"query": results,
+							"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
+							"state": 200
+						}, null, 3));
+					}
 
-				// call view engine 'ejs'
-				//render report page 'objlot' 
-				if (req.query.f == 'html') {
-					res.setHeader('Content-Type', 'text/html');
-					res.render('pages/objlot', {
-						cn: results[0].KN_OBJ,
-						NAMEVID_OBJLOT: results[0].NAMEVID_OBJLOT,
-						SQDECL_OBJLOT: results[0].SQDECL_OBJLOT,
-						SQTOCH_OBJLOT: results[0].SQTOCH_OBJLOT,
-						SQTOCHDATE_OBJLOT: results[0].SQTOCHDATE_OBJLOT,
-						RAZRVID_OBJLOT: results[0].RAZRVID_OBJLOT,
-						NAME_KLS: results[0].NAME_KLS,
-						PLACEDISC_ASNUM: results[0].PLACEDISC_ASNUM,
-						GID_OBJ: results[0].GID_OBJ
-					});
+
 				} else {
-					res.setHeader('Content-Type', 'application/json');
-					//works ok:  JSON response:
-					res.send(JSON.stringify({
-						"service": "nodeapi " + packageJSON.version,
-						"description": packageJSON.description,
-						"Target": "Firebird",
-						"query": results,
-						"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
-						"state": 200
-					}, null, 3));
+					if (req.query.f == 'html') {
+						res.setHeader('Content-Type', 'text/html');
+						res.render('pages/404Error', {
+							Target: "Firebird",
+							SearchCriteria: req.query.cn
+						});
+					} else {
+						res.send(JSON.stringify({
+							"service": "nodeapi " + packageJSON.version,
+							"description": packageJSON.description,
+							"Target": "Firebird",
+							"queryContent": req.query.cn,
+							"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
+							"stateText": "notFound",
+							"state": 404
+						}, null, 3));
+					}
 				}
 
-
-			} else {
-				if (req.query.f == 'html') {
-					res.setHeader('Content-Type', 'text/html');
-					res.render('pages/404Error', {
-						Target: "Firebird",
-						SearchCriteria: req.query.cn
-					});
-				} else {
-					res.send(JSON.stringify({
-						"service": "nodeapi " + packageJSON.version,
-						"description": packageJSON.description,
-						"Target": "Firebird",
-						"queryContent": req.query.cn,
-						"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
-						"stateText": "notFound",
-						"state": 404
-					}, null, 3));
-				}
 			}
+		}); // end of function call
 
-		}
-
-	);
 });
 
 

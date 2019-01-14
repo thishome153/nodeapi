@@ -153,12 +153,13 @@ exports.GetOBJFullbyCNpool = function (request_cn, callback) {
 
   // Get a free pool
   pool.get(function (err, db) {
-
     if (err) { //  throw err;
       console.log('firebird querying: Error attach ():' + err);
+      //pool.doError(err, callback);
       callback(true, err); //return error info in err
-      return;
+      return err; // if in callback occured error/return to here - will stack over
     }
+
     // db = DATABASE
     db.query(" select  o.Status_obj, o.KN_obj,  o.id_obj from obj o, objlot ol " +
       " where (o.id_obj = ol.id_obj) and " +

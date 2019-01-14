@@ -13,4 +13,7 @@ Introduce template engine EJS for transformig HTML
 ### v 1.0.0.19
 Inroduce cades function (cadesplugin)
 
+### v 1.0.0.20
+Firebird server error handler
+
 
