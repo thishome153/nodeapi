@@ -220,8 +220,6 @@ exports.GetOBJFullbyCNpool = function (request_cn, callback) {
 
     );
   });
-
-
   // Destroy pool
   pool.destroy();
 };

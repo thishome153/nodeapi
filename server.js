@@ -107,6 +107,23 @@ app.get('/fb/egrz/find', function (req, res) {
 });
 
 
+app.get('/fb/fteo/find', function (req, res) {
+	var tm = new Date();
+	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
+	console.log(tm.toLocaleTimeString() + '. Client ' + clientip + ' request GET...	- firebird query ');
+
+	res.header("Access-Control-Allow-Origin", "*");
+	/*
+		res.header("Access-Control-Allow-Origin", "*");
+		//res.setHeader('Content-Type', 'application/json');
+		res.setHeader('Content-Type', 'text/html');	
+		res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+		res.setHeader('Expires', '-1');	
+	*/
+
+	var dbFB = require('./connectorFB');
+});
+
 //*************************   /info - query for info about GKNData (mySQL)  *************************
 app.get('/info', function (req, res) {
 	var tm = new Date();
