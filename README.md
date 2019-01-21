@@ -31,7 +31,7 @@ got result:
 }
 ```
 
-##### @2018 Fixosoft 
+##### @2019 Fixosoft 
 ###### [feedback](mailto:serg.home153@gmail.com)
 
 
