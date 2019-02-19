@@ -1,5 +1,5 @@
 //node.js Web service 
-//@2018 Fixosoft
+//@2019 Fixosoft
 var packageJSON = require('./package.json');
 trafTotal = 0;
 ts = new Date(); // save startup time
