@@ -144,7 +144,7 @@ app.get('/info', function (req, res) {
 				"name": packageJSON.name,
 				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 				"version": packageJSON.version,
-				"platform": "node.js v8.11.3",
+				"platform": "node.js",
 				"port": port,
 				"state": 503,
 				"stateText": "Server Error"
@@ -160,7 +160,7 @@ app.get('/info', function (req, res) {
 			"name": packageJSON.name,
 			"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 			"version": packageJSON.version,
-			"platform": "node.js v8.11.3",
+			"platform": "node.js",
 			"port": port,
 			"query": results,
 			"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
@@ -169,6 +169,30 @@ app.get('/info', function (req, res) {
 	});
 });
 
+//*************************   /log - log query for log logins of GKNDATA clients  *************************
+app.get('/log', function (req, res) {	
+	var tm = new Date();
+	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
+	console.log('Clent '+  clientip+' connected...');	
+
+	res.header("Access-Control-Allow-Origin", "*");
+	res.setHeader('Content-Type', 'application/json');
+
+	res.send(JSON.stringify({
+		"Service": "nodeapi",
+		"Version": packageJSON.version ,		
+		"Client ": clientip + " login log",
+		"ApplicationType ": req.query.AppType,
+		"AppVersion" : "NC",
+		"Type": "Login log",
+		"Time ": tm
+	,
+		"state": 200,
+		"stateText": "Server ok"
+	}, null, 3));
+});
+
+//*************************   /subrf - get 'subject RF' *************************
 app.get('/subrf', function (req, res) {
 	console.log('detected request GET...');
 
@@ -186,7 +210,7 @@ app.get('/subrf', function (req, res) {
 				"name": packageJSON.name,
 				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 				"version": packageJSON.version,
-				"platform": "node.js v8.11.3",
+				"platform": "node.js",
 				"port": port,
 				"state": 503,
 				"stateText": "Server Error"
@@ -201,7 +225,7 @@ app.get('/subrf', function (req, res) {
 			"name": packageJSON.name,
 			"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 			"version": packageJSON.version,
-			"platform": "node.js v8.11.3",
+			"platform": "node.js",
 			"port": port,
 			"query": results,
 			"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),

@@ -16,4 +16,5 @@ Inroduce cades function (cadesplugin)
 ### v 1.0.0.20
 Firebird server error handler
 
-
+### v 1.0.0.21
+Application log entry
