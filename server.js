@@ -173,7 +173,7 @@ app.get('/info', function (req, res) {
 app.get('/log', function (req, res) {	
 	var tm = new Date();
 	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log('Client '+  clientip +' logged...');	
+	console.log('Log Client '+  clientip +' at ' + tm);	
 
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
@@ -184,12 +184,11 @@ if (req.query.AppType == undefined)
 	res.send(JSON.stringify({
 		"Service": "nodeapi",
 		"Version": packageJSON.version ,		
-		"Client ": clientip + " login log",
-		"ApplicationType ": apptype,
+		"Client": clientip + " login log",
+		"ApplicationType": apptype,
 		"AppVersion" : "NC",
 		"Type": "Login log",
-		"Time ": tm
-	,
+		"Time": tm,
 		"state": 200,
 		"stateText": "Server ok"
 	}, null, 3));
