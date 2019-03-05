@@ -173,26 +173,69 @@ app.get('/info', function (req, res) {
 app.get('/log', function (req, res) {	
 	var tm = new Date();
 	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log('Log Client '+  clientip +' at ' + tm);	
+
 
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
+
+	var LogData ={
+		ip : clientip,
+		Host: req.query.Host,
+	  };
+   
 if (req.query.AppType == undefined) 
- var apptype = "AppType expected"
+  LogData.AppType = "AppType expected"
  else 
- apptype = req.query.AppType;
-	res.send(JSON.stringify({
-		"Service": "nodeapi",
-		"Version": packageJSON.version ,		
-		"Client": clientip + " login log",
-		"ApplicationType": apptype,
-		"AppVersion" : "NC",
-		"Type": "Login log",
-		"Time": tm,
-		"state": 200,
-		"stateText": "Server ok"
-	}, null, 3));
+	 LogData.AppType = req.query.AppType;
+
+	 if (req.query.UserName == undefined) 
+	 LogData.UserName = "user expected"
+	else 
+		LogData.UserName = req.query.UserName;	 
+
+
+	/* // QUERY most be like this: 
+	INSERT INTO `AppLog` (`App_id`, `Service`, `Client`, `App_Type`, `App_Version`, `Log_Type`, `Timestamp`, `State`, `StateText`, `UserName`) 
+	VALUES (NULL, 'nodeapi', '10.66.77.150 login log', 'AppType expected', 'NC', 'Login log', '2019-03-05T05:34:12.117Z', '200', 'Server ok', '-- TODO ')
+	*/
+
+
+	db.Writelog(LogData, function (err, results) {
+		if (err) {
+			res.send(JSON.stringify({
+				"service": "nodeapi",
+				"brand": "Fixosoft",
+				"description": packageJSON.description,
+				"name": packageJSON.name,
+				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
+				"version": packageJSON.version,
+				"platform": "node.js",
+				"state": 503,
+				"stateText": "Server Error"
+			}, null, 3));
+			return;
+		}
+
+
+		res.send(JSON.stringify({
+			"Service": "nodeapi",
+			"Version": packageJSON.version ,		
+			"Client": clientip + " login log",
+			"ApplicationType": LogData.AppType,
+			"AppVersion" : "NC",
+			"Type": "Login log",
+			"Time": tm,
+			"state": 200,
+			"stateText": "Server ok"
+		}, null, 3));
+
+		console.log('Log Client '+  clientip +' at ' + tm + LogData.AppType);	
+
+	});
+
 });
+
+
 
 //*************************   /subrf - get 'subject RF' *************************
 app.get('/subrf', function (req, res) {

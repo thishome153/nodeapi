@@ -1,5 +1,5 @@
 // mysql connector unit
-//@2018 Fixosoft
+//@2018-2019 Fixosoft
 var mysql = require('mysql');
 var credents = require('./cfg/credents');
 var pool = mysql.createPool(credents.cfg);
@@ -113,13 +113,38 @@ exports.getAdsBlob = function (cn, callback) {
         //var jpeg = 'data:image/jpeg;base64,' + btoaLatin1(element.image);
       }
     });
-
-
     callback(false, resWithBlobs);
 
   });
 };
 
+
+exports.Writelog = function (LogData, callback) {
+  var tm = new Date();
+  var sql = 	"INSERT INTO `AppLog` (`App_id`, `Service`, `Client`, `App_Type`, `App_Version`, `Log_Type`, `Timestamp`,"+
+              " `State`, `StateText`, `UserName`,`Host`) "+
+                            "VALUES (NULL, 'nodeapi backend', '"+LogData.ip+"', '"+LogData.AppType+"', 'NC', 'Login log', '"+tm+"', "+
+              "'200', 'Server ok', '"+LogData.UserName+"','"+LogData.Host+"');";
+
+  // get a connection from the pool
+  pool_ads.getConnection(function (err, connection) {
+    if (err) {
+      console.log(err);
+      callback(true);
+      return;
+    }
+    // make the query
+    connection.query(sql, [LogData.UserName], function (err, results) {
+      connection.release();
+      if (err) {
+        console.log(err);
+        callback(true);
+        return;
+      }
+      callback(false, results);
+    });
+  });
+};
 // clear example : 
 /*
   //database.js
