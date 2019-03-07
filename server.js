@@ -112,8 +112,7 @@ app.get('/fb/egrz/find', function (req, res) {
 app.get('/fb/fteo/find', function (req, res) {
 	var tm = new Date();
 	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log(tm.toLocaleTimeString() + '. Client ' + clientip + ' request GET...	- firebird query ');
-
+	console.log(tm.toLocaleTimeString() + ' client ' + clientip + ' request GET...	- firebird query ');
 	res.header("Access-Control-Allow-Origin", "*");
 	/*
 		res.header("Access-Control-Allow-Origin", "*");
@@ -138,14 +137,12 @@ app.get('/info', function (req, res) {
 	db.getRecords("Some value - NC", function (err, results) {
 		if (err) {
 			res.send(JSON.stringify({
-				"service": "nodeapi",
+				"Servicename": packageJSON.name,				
 				"brand": "Fixosoft",
-				"description": packageJSON.description,
-				"name": packageJSON.name,
+				"Description": packageJSON.description,
 				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 				"version": packageJSON.version,
 				"platform": "node.js",
-				"port": port,
 				"state": 503,
 				"stateText": "Server Error"
 			}, null, 3));
@@ -154,14 +151,12 @@ app.get('/info', function (req, res) {
 
 
 		res.send(JSON.stringify({
-			"service": "nodeapi",
-			"brand": "Fixosoft",
-			"description": packageJSON.description,
-			"name": packageJSON.name,
+			"Servicename": packageJSON.name,				
+			"Brand": "Fixosoft",
+			"Description": packageJSON.description,
 			"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 			"version": packageJSON.version,
 			"platform": "node.js",
-			"port": port,
 			"query": results,
 			"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
 			"state": 200
@@ -181,12 +176,19 @@ app.get('/log', function (req, res) {
 	var LogData ={
 		ip : clientip,
 		Host: req.query.Host,
+		ServiceName: packageJSON.name +" v"+packageJSON.version,
+		TimeStamp: tm.toLocaleDateString() + " " + tm.toLocaleTimeString()		
 	  };
    
 if (req.query.AppType == undefined) 
   LogData.AppType = "AppType expected"
  else 
 	 LogData.AppType = req.query.AppType;
+
+	 if (req.query.AppVer == undefined) 
+	 LogData.AppVersion = "AppVer expected"
+	else 
+		LogData.AppVersion = req.query.AppVer;
 
 	 if (req.query.UserName == undefined) 
 	 LogData.UserName = "user expected"
@@ -203,13 +205,14 @@ if (req.query.AppType == undefined)
 	db.Writelog(LogData, function (err, results) {
 		if (err) {
 			res.send(JSON.stringify({
-				"service": "nodeapi",
-				"brand": "Fixosoft",
-				"description": packageJSON.description,
-				"name": packageJSON.name,
-				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
-				"version": packageJSON.version,
-				"platform": "node.js",
+				"ServiceName": packageJSON.name,				
+				"Description": packageJSON.description,				
+				"Version": packageJSON.version ,		
+				"Platform": "node.js",
+				"StartAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
+				"Timestamp": LogData.TimeStamp,
+				"Client": clientip + " login log",
+				"ApplicationType": LogData.AppType,
 				"state": 503,
 				"stateText": "Server Error"
 			}, null, 3));
@@ -218,18 +221,19 @@ if (req.query.AppType == undefined)
 
 
 		res.send(JSON.stringify({
-			"Service": "nodeapi",
+			"ServiceName": packageJSON.name,				
+			"Description": packageJSON.description,							
 			"Version": packageJSON.version ,		
 			"Client": clientip + " login log",
 			"ApplicationType": LogData.AppType,
-			"AppVersion" : "NC",
+			"AppVersion" : LogData.AppVersion,
 			"Type": "Login log",
-			"Time": tm,
+			"Timestamp": LogData.TimeStamp,
 			"state": 200,
 			"stateText": "Server ok"
 		}, null, 3));
 
-		console.log('Log Client '+  clientip +' at ' + tm + LogData.AppType);	
+		console.log('Log Client '+  clientip +' ' + tm.toLocaleDateString() + " " + tm.toLocaleTimeString()+ " " + LogData.AppType + " " + LogData.AppVersion);	
 
 	});
 
@@ -256,7 +260,6 @@ app.get('/subrf', function (req, res) {
 				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 				"version": packageJSON.version,
 				"platform": "node.js",
-				"port": port,
 				"state": 503,
 				"stateText": "Server Error"
 			}, null, 3));
@@ -271,7 +274,6 @@ app.get('/subrf', function (req, res) {
 			"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 			"version": packageJSON.version,
 			"platform": "node.js",
-			"port": port,
 			"query": results,
 			"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
 			"state": 200
@@ -287,7 +289,7 @@ app.get('/subrf', function (req, res) {
 app.get('/', function (req, res) {
 	var tm = new Date();
 	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log(tm.toLocaleTimeString() + '. Client ' + clientip + ' request GET...	/"index"');
+	console.log(tm.toLocaleTimeString() + ' client ' + clientip + ' request GET...	/"index"');
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'text/html');
 
@@ -311,7 +313,7 @@ app.get('/find', function (req, res) {
 
 	var tm = new Date();
 	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log('Client ' + clientip + 'detected request GET.../find');
+	console.log(tm.toLocaleTimeString() + ' client ' + clientip + ' request GET...	/"find"');	
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
 
@@ -324,8 +326,7 @@ app.get('/find', function (req, res) {
 				"name": packageJSON.name,
 				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 				"version": packageJSON.version,
-				"platform": "node.js v8.11.3",
-				"port": port,
+				"platform": "node.js",
 				"state": 503,
 				"stateText": "Server Error"
 			}, null, 3));
@@ -340,8 +341,7 @@ app.get('/find', function (req, res) {
 			"name": packageJSON.name,
 			"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 			"version": packageJSON.version,
-			"platform": "node.js v8.11.3",
-			"port": port,
+			"platform": "node.js",
 			"query": results,
 			"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
 			"state": 200
@@ -371,7 +371,6 @@ app.get('/ads', function (req, res) {
 				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 				"version": packageJSON.version,
 				"platform": "node.js v8.11.3",
-				"port": port,
 				"state": 503,
 				"stateText": "Server Error"
 			}, null, 3));
@@ -387,7 +386,6 @@ app.get('/ads', function (req, res) {
 			"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
 			"version": packageJSON.version,
 			"platform": "node.js v8.11.3",
-			"port": port,
 			"query": results,
 			"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
 			"state": 200
@@ -417,6 +415,6 @@ routes(app); //register the route
 
 
 app.listen(port);
-console.log(' node.js service ' + packageJSON.name + ' v' + packageJSON.version);
+console.log(packageJSON.description+ " " + packageJSON.name + ' v' + packageJSON.version);
 console.log(' Started ' + ts);
 console.log(' Listen port :' + port);

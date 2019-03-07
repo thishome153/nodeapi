@@ -123,7 +123,7 @@ exports.Writelog = function (LogData, callback) {
   var tm = new Date();
   var sql = 	"INSERT INTO `AppLog` (`App_id`, `Service`, `Client`, `App_Type`, `App_Version`, `Log_Type`, `Timestamp`,"+
               " `State`, `StateText`, `UserName`,`Host`) "+
-                            "VALUES (NULL, 'nodeapi backend', '"+LogData.ip+"', '"+LogData.AppType+"', 'NC', 'Login log', '"+tm+"', "+
+                            "VALUES (NULL, '"+LogData.ServiceName+"', '"+LogData.ip+"', '"+LogData.AppType+"', '"+LogData.AppVersion+"', 'App start', '"+LogData.TimeStamp+"', "+
               "'200', 'Server ok', '"+LogData.UserName+"','"+LogData.Host+"');";
 
   // get a connection from the pool
