@@ -1,5 +1,6 @@
 //node.js Web service 
 //@2019 Fixosoft
+
 var packageJSON = require('./package.json');
 trafTotal = 0;
 ts = new Date(); // save startup time
@@ -12,9 +13,7 @@ var express = require('express'),
 //var ejs = require('ejs');
 //var ejs = require('html');
 app.set('view engine', 'ejs');
-
 var db = require('./connector3');
-
 
 
 //*************************  Firebird  *************************
@@ -47,8 +46,7 @@ app.get('/fb/egrz/find', function (req, res) {
 				}, null, 3));
 				//return;    // - return will returned to call back callbacker
 				// else instead of return.... i'm so stupied
-			} 
-			else
+			} else
 			//otherwise, response`ll in HTML:
 			//(human readable, HTML pretty of coarse):
 			{
@@ -127,116 +125,20 @@ app.get('/fb/fteo/find', function (req, res) {
 
 //*************************   /info - query for info about GKNData (mySQL)  *************************
 app.get('/info', function (req, res) {
-	var tm = new Date();
-	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log(tm.toLocaleTimeString() + '. Client ' + clientip + ' request GET...	/info ');
-	//res.header("Access-Control-Allow-Origin", "http://10.66.77.47;http://www.geo-complex.com");
-	res.header("Access-Control-Allow-Origin", "*");
-	res.setHeader('Content-Type', 'application/json');
-
-	db.getRecords("Some value - NC", function (err, results) {
-		if (err) {
-			res.send(JSON.stringify({
-				"Servicename": packageJSON.name,				
-				"brand": "Fixosoft",
-				"Description": packageJSON.description,
-				"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
-				"version": packageJSON.version,
-				"platform": "node.js",
-				"state": 503,
-				"stateText": "Server Error"
-			}, null, 3));
-			return;
-		}
+	var requireModule = require('./server_info');
+	requireModule.Server_info(req, res);
+});
 
 
-		res.send(JSON.stringify({
-			"Servicename": packageJSON.name,				
-			"Brand": "Fixosoft",
-			"Description": packageJSON.description,
-			"startAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
-			"version": packageJSON.version,
-			"platform": "node.js",
-			"query": results,
-			"queryTimeStamp": tm.toLocaleDateString() + " " + tm.toLocaleTimeString(),
-			"state": 200
-		}, null, 3));
-	});
+app.get('/online', function (req, res) {
+	var Online = require('./server_online');
+	Online.Online(req, res);
 });
 
 //*************************   /log - log query for log logins of GKNDATA clients  *************************
-app.get('/log', function (req, res) {	
-	var tm = new Date();
-	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-
-
-	res.header("Access-Control-Allow-Origin", "*");
-	res.setHeader('Content-Type', 'application/json');
-
-	var LogData ={
-		ip : clientip,
-		Host: req.query.Host,
-		ServiceName: packageJSON.name +" v"+packageJSON.version,
-		TimeStamp: tm.toLocaleDateString() + " " + tm.toLocaleTimeString()		
-	  };
-   
-if (req.query.AppType == undefined) 
-  LogData.AppType = "AppType expected"
- else 
-	 LogData.AppType = req.query.AppType;
-
-	 if (req.query.AppVer == undefined) 
-	 LogData.AppVersion = "AppVer expected"
-	else 
-		LogData.AppVersion = req.query.AppVer;
-
-	 if (req.query.UserName == undefined) 
-	 LogData.UserName = "user expected"
-	else 
-		LogData.UserName = req.query.UserName;	 
-
-
-	/* // QUERY most be like this: 
-	INSERT INTO `AppLog` (`App_id`, `Service`, `Client`, `App_Type`, `App_Version`, `Log_Type`, `Timestamp`, `State`, `StateText`, `UserName`) 
-	VALUES (NULL, 'nodeapi', '10.66.77.150 login log', 'AppType expected', 'NC', 'Login log', '2019-03-05T05:34:12.117Z', '200', 'Server ok', '-- TODO ')
-	*/
-
-
-	db.Writelog(LogData, function (err, results) {
-		if (err) {
-			res.send(JSON.stringify({
-				"ServiceName": packageJSON.name,				
-				"Description": packageJSON.description,				
-				"Version": packageJSON.version ,		
-				"Platform": "node.js",
-				"StartAt": ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
-				"Timestamp": LogData.TimeStamp,
-				"Client": clientip + " login log",
-				"ApplicationType": LogData.AppType,
-				"state": 503,
-				"stateText": "Server Error"
-			}, null, 3));
-			return;
-		}
-
-
-		res.send(JSON.stringify({
-			"ServiceName": packageJSON.name,				
-			"Description": packageJSON.description,							
-			"Version": packageJSON.version ,		
-			"Client": clientip + " login log",
-			"ApplicationType": LogData.AppType,
-			"AppVersion" : LogData.AppVersion,
-			"Type": "Login log",
-			"Timestamp": LogData.TimeStamp,
-			"state": 200,
-			"stateText": "Server ok"
-		}, null, 3));
-
-		console.log('Log Client '+  clientip +' ' + tm.toLocaleDateString() + " " + tm.toLocaleTimeString()+ " " + LogData.AppType + " " + LogData.AppVersion);	
-
-	});
-
+app.get('/log', function (req, res) {
+	var server_log = require('./server_log');
+	server_log.Server_log(req, res);
 });
 
 
@@ -313,7 +215,7 @@ app.get('/find', function (req, res) {
 
 	var tm = new Date();
 	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log(tm.toLocaleTimeString() + ' client ' + clientip + ' request GET...	/"find"');	
+	console.log(tm.toLocaleTimeString() + ' client ' + clientip + ' request GET...	/"find"');
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
 
@@ -415,6 +317,6 @@ routes(app); //register the route
 
 
 app.listen(port);
-console.log(packageJSON.description+ " " + packageJSON.name + ' v' + packageJSON.version);
+console.log(packageJSON.description + " " + packageJSON.name + ' v' + packageJSON.version);
 console.log(' Started ' + ts);
 console.log(' Listen port :' + port);

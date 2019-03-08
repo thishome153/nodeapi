@@ -6,29 +6,29 @@ and response with JSON format. As known, well and further it is used in HTML, ph
 
 ##### Example (zum beispiel)
 
-http://node-js-server/node
+http://node-js-server/node/info
 got result:
 ```JSON
+
 {
-   "service": "nodeapi",
-   "brand": "Fixosoft",
-   "description": "node.js Web server",
-   "name": "srv1",
-   "startAt": "2018-10-26 11:38:46",
-   "version": "1.0.0.7",
-   "platform": "node.js v8.11.3",
-   "port": 3050,
+   "Servicename": "nodeapi",
+   "Brand": "Fixosoft",
+   "Description": "node.js webapi REST service",
+   "startAt": "3/8/2019 7:56:09 PM",
+   "version": "1.0.0.25",
+   "platform": "node.js",
    "query": [
       {
-         "Parcels": 996,
-         "vidimusCount": 1212,
-         "BlockCount": 928,
-         "KPTCount": 1131
+         "Parcels": 1084,
+         "vidimusCount": 1349,
+         "BlockCount": 940,
+         "KPTCount": 1160
       }
    ],
-   "queryTimeStamp": "2018-10-26 21:34:56",
+   "queryTimeStamp": "3/8/2019 7:56:18 PM",
    "state": 200
 }
+
 ```
 
 ##### @2019 Fixosoft 
