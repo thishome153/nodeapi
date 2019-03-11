@@ -123,6 +123,29 @@ app.get('/fb/fteo/find', function (req, res) {
 	var dbFB = require('./connectorFB');
 });
 
+
+//************************* root (index`ll show help  (test only, no Mysql links)  *************************
+app.get('/', function (req, res) {
+
+	var requireModule = require('./server_index');
+	requireModule.Server_Index(req, res);
+	/*
+	var tm = new Date();
+	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
+	console.log(tm.toLocaleTimeString() + ' client ' + clientip + ' request GET...	/"index"');
+	res.header("Access-Control-Allow-Origin", "*");
+	res.setHeader('Content-Type', 'text/html');
+
+	res.render('pages/index', {
+		version: packageJSON.version,
+		servicename: packageJSON.name,
+		startdate: ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
+		port: port
+	});
+	*/
+
+});
+
 //*************************   /info - query for info about GKNData (mySQL)  *************************
 app.get('/info', function (req, res) {
 	var requireModule = require('./server_info');
@@ -187,22 +210,6 @@ app.get('/subrf', function (req, res) {
 
 });
 
-//************************* root (index`ll show help  (test only, no Mysql links)  *************************
-app.get('/', function (req, res) {
-	var tm = new Date();
-	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
-	console.log(tm.toLocaleTimeString() + ' client ' + clientip + ' request GET...	/"index"');
-	res.header("Access-Control-Allow-Origin", "*");
-	res.setHeader('Content-Type', 'text/html');
-
-	res.render('pages/index', {
-		version: packageJSON.version,
-		servicename: packageJSON.name,
-		startdate: ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
-		port: port
-	});
-
-});
 
 
 
