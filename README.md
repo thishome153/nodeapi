@@ -31,7 +31,7 @@ got result:
 
 ```
 
-##### @2019 Fixosoft 
+##### @0e73 Fixosoft 
 ###### [feedback](mailto:serg.home153@gmail.com)
 
 
