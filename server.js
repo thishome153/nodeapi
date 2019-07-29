@@ -158,6 +158,11 @@ app.get('/online', function (req, res) {
 	Online.Online(req, res);
 });
 
+app.get('/pkk5', function (req, res) {
+	var Pkk5 = require('./server_pkk5.js');
+	Pkk5.GETReq(req, res);
+});
+
 //*************************   /log - log query for log logins of GKNDATA clients  *************************
 app.get('/log', function (req, res) {
 	var server_log = require('./server_log');
