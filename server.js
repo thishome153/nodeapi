@@ -5,9 +5,15 @@ var packageJSON = require('./package.json');
 trafTotal = 0;
 ts = new Date(); // save startup time
 var path = require("path");
+
 var express = require('express'),
 	app = express(),
+	//cookieParser = express.cookieParser(),  !!!Most middleware (like cookieParser) is no longer bundled with Express and must be installed separately
 	port = process.env.port || 3050;
+	var cookieParser = require('cookie-parser');
+	cookieParser.se
+	app.use(cookieParser('MY SECRET'));
+
 
 // set the view engine to ejs
 //var ejs = require('ejs');
@@ -160,7 +166,22 @@ app.get('/online', function (req, res) {
 
 app.get('/pkk5', function (req, res) {
 	var Pkk5 = require('./server_pkk5.js');
-	Pkk5.GETReq(req, res);
+	Pkk5.GETReq(req, res, function(errPKK5, ResPKK5)
+	{
+		if (errPKK5)
+		{
+
+		}
+		else
+		{
+			console.log('https succesfull');
+			var testRes = ResPKK5;
+		}
+	}
+	);
+	//var resof = resoFRequest;
+
+	
 });
 
 //*************************   /log - log query for log logins of GKNDATA clients  *************************
