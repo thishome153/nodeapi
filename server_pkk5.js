@@ -4,14 +4,12 @@ var http = require('http');
 
 
 exports.GETReq = function (req, res, callback) {
-	console.log('detected request GET...pkk5 wrapper');
+	console.log('Recieved request (GET) to pkk5 service : ' + req.url);
 	var tm = new Date();
 	var clientip = (req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || '').split(',')[0] || req.client.remoteAddress || req.host;
 	res.header("Access-Control-Allow-Origin", "*");
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Referrer', 'ref-ref-ref');
-
-	console.log('http request: '+ req.url);
 
 	/*
 	//Print to console params :
@@ -25,16 +23,13 @@ exports.GETReq = function (req, res, callback) {
         console.log(oQueryParams);
     }
 */
-	if (req.query.cn)
-	{
-	console.log('cn:' + req.query.cn);	
-	var pkk5URL = 'https://pkk5.rosreestr.ru/api/features/1/'+ req.query.cn;//26:5:43019:22'; //?tolerance=1&limit=11';
-	var FirURL = 'http://rosreestr.ru/api/online/fir_object/'+ req.query.cn;
-	}
-	else
-	{
-	var pkk5URL = 'https://pkk5.rosreestr.ru/api/features/1/26:5:43019:22'; //?tolerance=1&limit=11';
-	var FirURL = 'http://rosreestr.ru/api/online/fir_object/26:6:0:1975456562';
+	if (req.query.cn) {
+		console.log('Start request with cn:' + req.query.cn);
+		var pkk5URL = 'https://pkk5.rosreestr.ru/api/features/1/' + req.query.cn; //26:5:43019:22'; //?tolerance=1&limit=11';
+		var FirURL = 'http://rosreestr.ru/api/online/fir_object/' + req.query.cn;
+	} else {
+		var pkk5URL = 'https://pkk5.rosreestr.ru/api/features/1/26:5:43019:22'; //?tolerance=1&limit=11';
+		var FirURL = 'http://rosreestr.ru/api/online/fir_object/26:6:0:1975456562';
 	}
 
 	var TittleMessage = {
@@ -44,24 +39,58 @@ exports.GETReq = function (req, res, callback) {
 		"Client": clientip + " login log",
 		"Request": req.query,
 		"Purpose": "pkk5 REST api wrapper",
-		"Timestamp": tm};
+		"Timestamp": tm
+	};
 
-		var optionsReq = { 
-			hostname: 'pkk5.rosreestr.ru',
-			path: '/api/features/1/26:5:43019:22',
-			method: 'GET',
-			headers: {'Cookie': 'myCookie=myvalue'}
-		};
+	var optionsReq = {
+		hostname: 'pkk5.rosreestr.ru',
+		path: '/api/features/1/26:5:43019:22',
+		method: 'GET',
+		headers: {
+			'Cookie': 'myCookie=myvalue'
+		}
+	};
 
-		var optionsFIR = { 
-			hostname: 'rosreestr.ru',
-			path: '/api/online/fir_object/26:5:43019:24',
-			method: 'GET',
-			headers: {'Cookie': 'myCookie=myvalue'}
+	var optionsFIR = {
+		hostname: 'rosreestr.ru',
+		path: '/api/online/fir_object/26:5:43019:24',
+		method: 'GET',
+		headers: {
+			'Cookie': 'myCookie=myvalue'
+		}
 
-		};
+	};
 
-	//var reqHTTP = http.request(optionsFIR, function(resp) {
+	var reqHTTP = http.request(optionsFIR, function (respWithOptions) {
+		console.log('Start http.request with options: ......');
+		if (respWithOptions.statusCode == 200) {
+			var Test = respWithOptions;
+			console.log('Got response from http.request with options');
+		}
+	});
+
+	var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', pkk5URL, true);
+	xhr.send();
+
+	if (xhr.status == 200)
+		{	var TEstXHR = JSON.parse(xhr.responseText);
+		
+		}
+		if (xhr.status !=200)
+			console.log('Got response from XMLHttpRequest(): ' + xhr.statusText);	
+
+	xhr.onload = function () {
+		if (xhr.status == 200)
+		{	var TEstXHR = JSON.parse(xhr.responseText);
+		
+		}
+		if (xhr.status !=200)
+			console.log('Got response from XMLHttpRequest(): ' + xhr.statusText);			
+	}
+
+
 	//	var reqHTTP = http.request(optionsFIR, (resp) => {		
 	//https.get(pkk5URL, (resp) => {		
 	http.get(FirURL, (resp) => {
@@ -80,43 +109,41 @@ exports.GETReq = function (req, res, callback) {
 			console.log(JSON.parse(data).explanation);
 		});
 */
-  if (resp.statusCode == 200)
-  {
-		resp.on('end', () => {
-          var ConcatedJSON ={
-			  "Title": TittleMessage,
-				"state": 200,
-				"stateText": "Server ok",
-				"Source": JSON.parse(data)
+		if (resp.statusCode == 200) {
+			resp.on('end', () => {
+				var ConcatedJSON = {
+					"Title": TittleMessage,
+					"state": 200,
+					"stateText": "Server ok",
+					"Source": JSON.parse(data)
+				};
+
+				let options = {
+					maxAge: 1000 * 60 * 15, // would expire after 15 minutes
+					httpOnly: true, // The cookie only accessible by the web server
+					signed: true // Indicates if the cookie should be signed
+				}
+				res.cookie('cookieName', 'cookieValue', options) // options is optional
+				res.send(
+					ConcatedJSON
+				);
+				callback(false, ConcatedJSON);
+
+			});
+		}
+
+		if (resp.statusCode == 204) {
+			var ConcatedJSON = {
+				"Title": TittleMessage,
+				"state": 204,
+				"stateText": resp.statusMessage,
 			};
 
-			let options = {
-				maxAge: 1000 * 60 * 15, // would expire after 15 minutes
-				httpOnly: true, // The cookie only accessible by the web server
-				signed: true // Indicates if the cookie should be signed
-			}
-		    res.cookie('cookieName', 'cookieValue', options) // options is optional
-			res.send(
-				ConcatedJSON
-			);
+			console.log('http response:' + resp.statusMessage);
+
+			res.send(ConcatedJSON);
 			callback(false, ConcatedJSON);
-
-		});
-	}
-
-	if (resp.statusCode == 204)
-	{
-			var ConcatedJSON ={
-				"Title": TittleMessage,
-				  "state": 204,
-				  "stateText": resp.statusMessage,
-			  };
-  
-			  console.log('http response:' + resp.statusMessage);
-  
-			  res.send(  ConcatedJSON );
-			  callback(false, ConcatedJSON);
-	  }
+		}
 
 
 
@@ -124,7 +151,7 @@ exports.GETReq = function (req, res, callback) {
 	}).on("error", (err) => {
 
 		res.send(JSON.stringify({
-            "Tittle": TittleMessage,
+			"Tittle": TittleMessage,
 			"Request": req.query,
 			"Message": err,
 			"state": 500,
