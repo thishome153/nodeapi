@@ -11,10 +11,31 @@ exports.GETReq = function (req, res, callback) {
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Referrer', 'ref-ref-ref');
 
-	console.log('http request:........');
-	//console.log('http request coockie: ' + req.cookies);
+	console.log('http request: '+ req.url);
+
+	/*
+	//Print to console params :
+	var oQueryParams;
+	queryString = require('querystring');
+    // get query params as object
+    if (req.url.indexOf('?') >= 0) {
+        oQueryParams = queryString.parse(req.url.replace(/^.*\?/, ''));
+
+        // do stuff
+        console.log(oQueryParams);
+    }
+*/
+	if (req.query.cn)
+	{
+	console.log('cn:' + req.query.cn);	
+	var pkk5URL = 'https://pkk5.rosreestr.ru/api/features/1/'+ req.query.cn;//26:5:43019:22'; //?tolerance=1&limit=11';
+	var FirURL = 'http://rosreestr.ru/api/online/fir_object/'+ req.query.cn;
+	}
+	else
+	{
 	var pkk5URL = 'https://pkk5.rosreestr.ru/api/features/1/26:5:43019:22'; //?tolerance=1&limit=11';
-	var FirURL = 'http://rosreestr.ru/api/online/fir_object/26:5:43019:204';
+	var FirURL = 'http://rosreestr.ru/api/online/fir_object/26:6:0:1975456562';
+	}
 
 	var TittleMessage = {
 		"ServiceName": packageJSON.name,
