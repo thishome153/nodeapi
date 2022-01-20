@@ -1,4 +1,4 @@
-//@2019 Fixosoft
+//@2022 Fixosoft
 var packageJSON = require('./package.json');
 var db = require('./connector3');
 
